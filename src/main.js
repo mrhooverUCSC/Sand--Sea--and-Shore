@@ -22,6 +22,8 @@ let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
 let oceanSpeed = 5;
 
+let playerShotAvailable = true; // tracks wether the player can shoot
+
 // controls
 let keyRIGHT, keyUP, keyDOWN, keyENTER;
 /*

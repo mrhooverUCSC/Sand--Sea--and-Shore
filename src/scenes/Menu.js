@@ -4,10 +4,13 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
+        this.load.image('oceanBackground',  './assets/images/oceanBackground.png');
     }
 
     create() {
         // background
+        this.oceanBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'oceanBackground').setOrigin(0, 0);
+
         // menu text configuration
         let menuConfig = {
             fontFamily: 'Courier',
@@ -26,10 +29,6 @@ class Menu extends Phaser.Scene {
         this.add.text(game.config.width/2, game.config.height/3 - borderUISize, 'Sea, Sand and Shore', menuConfig).setOrigin(0.5);
         menuConfig.fontSize = '30px';
         this.add.text(game.config.width/2, game.config.height/3 + borderPadding * 2,'A Tower Defense Game', menuConfig).setOrigin(0.5);
-        // score text
-
-        this.playText = this.add.text(game.config.width / 2, game.config.height - borderUISize * 6, 'Play', menuConfig).setOrigin(0.5);
-        this.tutorialText = this.add.text(game.config.width / 2, game.config.height - borderUISize * 4, 'Tutorial', menuConfig).setOrigin(0.5);
         // key inputs
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         // list of scenes
@@ -39,7 +38,7 @@ class Menu extends Phaser.Scene {
 
     update() {
         if(Phaser.Input.Keyboard.JustDown(keyENTER)) {   // enter play scene
-            this.scene.start('playScene');
+            this.scene.start("playScene");
         }
     }
 
