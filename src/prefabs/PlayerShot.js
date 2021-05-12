@@ -1,9 +1,11 @@
 class PlayerShot extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, texture, frame) {
-        super(scene, x, y, texture, frame);
+    constructor(scene, x, y, texture, rotation) {
+        super(scene, x, y, texture);
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        this.setVelocity(100, 0);
+        this.rotation = rotation;
+        this.speedMultiplier = 100;
+        this.setVelocity(Math.cos(rotation) * this.speedMultiplier, Math.sin(rotation) * this.speedMultiplier);
     }
 
     update() {

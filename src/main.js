@@ -33,3 +33,5 @@ Matthew Hoover
 Alejandro Silva
 Ivan Martinez-Arias
 */
+
+// how to shoot good: https://blog.ourcade.co/posts/2020/fire-bullets-from-facing-direction-phaser-3/
