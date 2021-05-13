@@ -18,7 +18,7 @@ class Play extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-        this.player = new Player(this, game.config.width / 3, game.config.height / 3, 'player').setOrigin(0.5, 0.5);
+        this.player = new Player(this, game.config.width / 2, game.config.height / 4, 'player').setOrigin(0.5, 0.5);
 
         this.enemyGroup = this.add.group({
             runChildUpdate: true

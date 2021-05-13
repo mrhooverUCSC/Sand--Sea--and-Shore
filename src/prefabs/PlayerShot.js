@@ -9,6 +9,6 @@ class PlayerShot extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        //check collision 
+        //check collision
     }
 }
