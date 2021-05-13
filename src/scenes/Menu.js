@@ -5,6 +5,10 @@ class Menu extends Phaser.Scene {
 
     preload() {
         this.load.image('oceanBackground',  './assets/images/oceanBackground.png');
+
+        // Received free font from:
+        // https://www.1001freefonts.com/callaghands.font
+        this.loadFont('callaghands', './assets/font/Callaghands.ttf');
     }
 
     create() {
@@ -13,12 +17,14 @@ class Menu extends Phaser.Scene {
 
         // menu text configuration
         let menuConfig = {
-            fontFamily: 'Courier',
+            fontFamily: 'callaghands',
             fontSize: '40px',
             backgroundColor: '#F3B141',
             color: '#000000',
             align: 'center',
             padding: {
+                left: 10,
+                right: 10,
                 top: 5,
                 bottom: 5,
             },
@@ -42,4 +48,14 @@ class Menu extends Phaser.Scene {
         }
     }
 
+    // received help from online source
+    // https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
+    loadFont(name, url) {
+        var newFont = new FontFace(name, `url(${url})`);
+        newFont.load().then(function (loaded) {
+            document.fonts.add(loaded);
+        }).catch(function (error) {
+            return error;
+        });
+    }
 }

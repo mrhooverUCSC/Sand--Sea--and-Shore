@@ -24,14 +24,22 @@ class Play extends Phaser.Scene {
             runChildUpdate: true
         })
 
+        this.environmentTypes = ["Sea", "Sky", "Shore"];
         // adds new enemy when starting after 3 seconds
         this.time.delayedCall(3000, () => {
             this.addEnemy();
-        })
+        });
+
+        // sets up spawn zones
+        // this.seaZone =
+        // this.shoreZone =
+        // this.skyZone =
+
     }
 
     update() {
         this.player.update();
+//        this.newEnemy[this.updateString + this.environmentTypes[2]]();
 
         if(keyRIGHT.isDown && playerShotAvailable){
             new PlayerShot(this, this.player.x + this.player.width/2 * Math.cos(this.player.rotation), this.player.y + this.player.height/2 * Math.sin(this.player.rotation), 'shot', this.player.rotation).setOrigin(0.5, 0.5);
