@@ -5,7 +5,7 @@ class TurretShot extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.rotation = rotation;
-        this.speedMultiplier = 250;
+        this.speedMultiplier = 400;
         this.setVelocity(Math.cos(rotation) * this.speedMultiplier, Math.sin(rotation) * this.speedMultiplier);
     }
 

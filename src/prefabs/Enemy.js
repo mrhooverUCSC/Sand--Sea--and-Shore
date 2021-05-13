@@ -6,6 +6,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(speed);
         this.body.onCollide = true;
         this.body.setImmovable(true);
+        this.health = 100;
 
         this.environment = environment;
         console.log(`environment: ${environment} / speed: ${speed}`);

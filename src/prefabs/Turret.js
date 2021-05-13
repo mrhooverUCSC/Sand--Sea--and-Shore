@@ -18,7 +18,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
                 this.ready = false;
                 console.log("shoot");
                 this.scene.time.addEvent({
-                    delay: 100,
+                    delay: 500,
                     callback: this.shotAvailable,
                     callbackScope: this,
                     loop: false

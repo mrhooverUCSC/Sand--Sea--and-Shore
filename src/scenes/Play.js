@@ -66,6 +66,8 @@ class Play extends Phaser.Scene {
 
     enemyHitByPlayer(enemy, shot){
         shot.destroy();
+        enemy.health -= 1;
+        console.log(enemy.health);
         //deal damage to the enemy
     }
 
