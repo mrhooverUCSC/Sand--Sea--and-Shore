@@ -9,6 +9,7 @@ class Play extends Phaser.Scene {
         this.load.image('player', 'images/PlayerBall.png');
         this.load.image('shot', 'images/PlayerShot.png');
         this.load.image('crab', 'images/newCrab.jpg');
+        this.load.image('tower', 'images/temp_castle1.png');
     }
 
     create(){
@@ -18,6 +19,7 @@ class Play extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
+        this.tower = new Tower(this, game.config.width / 2.25, game.config.height / 2, 'tower').setOrigin(0.5, 0.5);
         this.player = new Player(this, game.config.width / 2, game.config.height / 4, 'player').setOrigin(0.5, 0.5);
 
         this.enemyGroup = this.add.group({
@@ -44,7 +46,7 @@ class Play extends Phaser.Scene {
                 loop: false
             })
         }
-        
+
         this.physics.world.collide(this.player, this.enemyGroup, this.collisionOccurred, null, this);
 
     }
