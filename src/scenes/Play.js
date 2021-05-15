@@ -25,21 +25,32 @@ class Play extends Phaser.Scene {
         })
 
         this.environmentTypes = ["Sea", "Sky", "Shore"];
-        // adds new enemy when starting after 3 seconds
+
+        // spawns a wave of enemies in the first 3 seconds
         this.time.delayedCall(3000, () => {
-            this.addEnemy();
+            let sideZones = [0, game.config.width];     // [leftZone, rightZone]
+            for(let i = 0; i < 2; i++) {    // spawns 2 separate waves for the left and right side
+                let speedPosition = Math.pow(-1, i);
+                let randomAmount = Phaser.Math.Between(5, 10);
+                console.log(`${i} spawned: ${randomAmount}`);
+                // spawns the single hordes in intervals
+                for(let j = 0; j < randomAmount; j++) {
+                    this.time.delayedCall(2000, () => {
+                        let newTime = 1000 * Phaser.Math.Between(1, 3);
+                        let randomYEstimate = Phaser.Math.Between(-25, 25);
+                        this.time.delayedCall(newTime, () => {
+                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 50 * speedPosition, 'crab', 'Shore');
+                        });
+                    });
+                }
+            }
         });
 
-        // sets up spawn zones
-        // this.seaZone =
-        // this.shoreZone =
-        // this.skyZone =
 
     }
 
     update() {
         this.player.update();
-//        this.newEnemy[this.updateString + this.environmentTypes[2]]();
 
         if(keyRIGHT.isDown && playerShotAvailable){
             new PlayerShot(this, this.player.x + this.player.width/2 * Math.cos(this.player.rotation), this.player.y + this.player.height/2 * Math.sin(this.player.rotation), 'shot', this.player.rotation).setOrigin(0.5, 0.5);
@@ -57,8 +68,10 @@ class Play extends Phaser.Scene {
 
     }
 
-    addEnemy() {
-        let newEnemy = new Enemy(this, game.config.width, game.config.height - 200, 'crab', 'land', -100);
+    // parameters: x Position, y Position, speed, type of enemy, environment of enemy
+    addEnemy(xZone, yZone, speed, type, environment) {
+        console.log("spawned enemy");
+        let newEnemy = new Enemy(this, xZone, yZone, type, environment, speed);
         this.enemyGroup.add(newEnemy);
     }
 
