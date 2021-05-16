@@ -8,18 +8,19 @@ class Play extends Phaser.Scene {
 
         this.load.image('player', 'images/PlayerBall.png');
         this.load.image('shot', 'images/PlayerShot.png');
-        this.load.image('crab', 'images/newCrab.jpg');
-        this.load.image('tower', 'images/temp_castle1.png');
+        this.load.image('crab', 'images/landCrab.png');
+        this.load.image('tower', 'images/tower.png');
     }
 
-    create(){
+    create() {
         this.oceanBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'oceanBackground').setOrigin(0, 0);
 
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-        this.tower = new Tower(this, game.config.width / 2.25, game.config.height / 2, 'tower').setOrigin(0.5, 0.5);
+        // Tower
+        this.tower = new Tower(this, game.config.width / 2, game.config.height - 100, 'tower').setOrigin(0.5, 0.5);
         this.player = new Player(this, game.config.width / 2, game.config.height / 4, 'player').setOrigin(0.5, 0.5);
 
         this.enemyGroup = this.add.group({
@@ -32,7 +33,7 @@ class Play extends Phaser.Scene {
         this.time.delayedCall(3000, () => {
             let sideZones = [0, game.config.width];     // [leftZone, rightZone]
             for(let i = 0; i < 2; i++) {    // spawns 2 separate waves for the left and right side
-                let speedPosition = Math.pow(-1, i);
+                let speedPosition = Math.pow(-1, i);    // to invert the signs in order to apply the correct velocity
                 let randomAmount = Phaser.Math.Between(5, 10);
                 // spawns the single hordes in intervals
                 for(let j = 0; j < randomAmount; j++) {
@@ -40,7 +41,7 @@ class Play extends Phaser.Scene {
                         let newTime = 1000 * Phaser.Math.Between(1, 3);
                         let randomYEstimate = Phaser.Math.Between(-25, 25);
                         this.time.delayedCall(newTime, () => {
-                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 25 * speedPosition, 'crab', 'Shore');
+                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 20 * speedPosition, 'crab', 'Shore');
                         });
                     });
                 }
@@ -65,7 +66,8 @@ class Play extends Phaser.Scene {
             })
         }
 
-        this.physics.world.collide(this.player, this.enemyGroup, this.collisionOccurred, null, this);
+        // checks collision on the tower
+        this.physics.world.collide(this.tower, this.enemyGroup, this.collisionOccurred, null, this);
 
     }
 
@@ -76,6 +78,6 @@ class Play extends Phaser.Scene {
     }
 
     collisionOccurred() {
-        console.log("collision detected");
+        this.scene.start('gameOverScene');
     }
 }
