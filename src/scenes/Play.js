@@ -26,10 +26,28 @@ class Play extends Phaser.Scene {
             runChildUpdate: true
         })
 
-        // adds new enemy when starting after 3 seconds
+        this.environmentTypes = ["Sea", "Sky", "Shore"];
+
+        // spawns a wave of enemies in the first 3 seconds
         this.time.delayedCall(3000, () => {
-            this.addEnemy();
-        })
+            let sideZones = [0, game.config.width];     // [leftZone, rightZone]
+            for(let i = 0; i < 2; i++) {    // spawns 2 separate waves for the left and right side
+                let speedPosition = Math.pow(-1, i);
+                let randomAmount = Phaser.Math.Between(5, 10);
+                // spawns the single hordes in intervals
+                for(let j = 0; j < randomAmount; j++) {
+                    this.time.delayedCall(2000, () => {
+                        let newTime = 1000 * Phaser.Math.Between(1, 3);
+                        let randomYEstimate = Phaser.Math.Between(-25, 25);
+                        this.time.delayedCall(newTime, () => {
+                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 25 * speedPosition, 'crab', 'Shore');
+                        });
+                    });
+                }
+            }
+        });
+
+
     }
 
     update() {
@@ -51,8 +69,9 @@ class Play extends Phaser.Scene {
 
     }
 
-    addEnemy() {
-        let newEnemy = new Enemy(this, game.config.width, game.config.height - 200, 'crab', 'land', -100);
+    // parameters: x Position, y Position, speed, type of enemy, environment of enemy
+    addEnemy(xZone, yZone, speed, type, environment) {
+        let newEnemy = new Enemy(this, xZone, yZone, type, environment, speed);
         this.enemyGroup.add(newEnemy);
     }
 
