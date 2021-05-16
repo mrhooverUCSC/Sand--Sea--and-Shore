@@ -4,8 +4,9 @@ class PlayerShot extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this); //add to scene
         scene.physics.add.existing(this); //apply physics
         this.rotation = rotation; //rotate in the direction the player is facing
-        this.speedMultiplier = 250; //speed 
+        this.speedMultiplier = 400; //speed 
         this.setVelocity(Math.cos(rotation) * this.speedMultiplier, Math.sin(rotation) * this.speedMultiplier); //speed in each direction
         this.body.onCollide = true; //collision detection
+        this.body.isCircle = true;
     }
 }

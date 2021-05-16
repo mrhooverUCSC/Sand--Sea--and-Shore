@@ -6,7 +6,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade:{
-            debug: false,
+            debug: true,
             gravity: {
                 x: 0,
                 y: 0
@@ -22,8 +22,6 @@ let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
 let oceanSpeed = 5;
 
-let playerShotAvailable = true; // tracks wether the player can shoot
-
 // controls
 let keyRIGHT, keyUP, keyDOWN, keyENTER;
 /*
@@ -35,3 +33,6 @@ Ivan Martinez-Arias
 */
 
 // how to shoot good: https://blog.ourcade.co/posts/2020/fire-bullets-from-facing-direction-phaser-3/
+//if the game is starting to slow down, can move turret shot collision from all enemies and all shots to one enemy per shot, by moving 
+//    "this.physics.world.overlap(enemies, shots)" to "this.scene.physics.world.overlap(this.enemies.getChildren()[0], shot, this.scene.enemyHitByPlayer, null, this);" in the Turret class, then updating all the 
+//    turret's shots as a gruop in the update function

@@ -16,7 +16,6 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
                 let shot = new TurretShot(this.scene, this.x + this.width/2 * Math.cos(this.rotation), this.y + this.height/2 * Math.sin(this.rotation), 'butcherShot', this.rotation, this.enemies.getChildren()[0]).setOrigin(0.5, 0.5);
                 this.shots.add(shot);
                 this.ready = false;
-                console.log("shoot");
                 this.scene.time.addEvent({
                     delay: 500,
                     callback: this.shotAvailable,

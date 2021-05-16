@@ -11,6 +11,7 @@ class Play extends Phaser.Scene {
         this.load.image('crab', 'images/newCrab.jpg');
         this.load.image('butcher', 'images/ButcherBall.png');
         this.load.image('butcherShot', 'images/ButcherShot.png');
+        this.load.image('blank', 'images/Blank.png');
     }
 
     create(){
@@ -22,41 +23,37 @@ class Play extends Phaser.Scene {
 
         this.enemyGroup = this.add.group({
             runChildUpdate: true
-        })
+        });
 
         //The player character's shots
         this.shots = this.add.group({
             runChildUpdate: true
-        })
+        });
 
-        this.player = new Player(this, game.config.width / 2, game.config.height / 4, 'player').setOrigin(0.5, 0.5);
+        this.player = new Player(this, game.config.width / 2, game.config.height / 4, 'player', this.shots).setOrigin(0.5, 0.5);
         this.turret = new Turret(this, 3 * game.config.width/5, 2*game.config.height/5, 'butcher', this.enemyGroup, this.shots).setOrigin(0.5, 0.5);
+        //this.turret2 = new Turret(this, 2 * game.config.width/5, 2*game.config.height/5, 'butcher', this.enemyGroup, this.shots).setOrigin(0.5, 0.5);
+        this.defense1 = this.add.sprite(game.config.width/5, game.config.height/5, 'blank').setOrigin(0.5, 0.5);
+        this.defense1.setInteractive().on('pointerdown', this.placeTurret, "hello"); //set interactable, then call hello() on click.
 
         // adds new enemy when starting after 3 seconds
         this.time.delayedCall(3000, () => {
             this.addEnemy();
-        })
+        });
+
+
+    }
+
+    placeTurret(e){
+        console.log(e);
     }
 
     update() {
         this.player.update();
         this.turret.update();
-
-        if(keyRIGHT.isDown && playerShotAvailable){
-            let newShot = new PlayerShot(this, this.player.x + this.player.width/2 * Math.cos(this.player.rotation), this.player.y + this.player.height/2 * Math.sin(this.player.rotation), 'shot', this.player.rotation).setOrigin(0.5, 0.5);
-            this.shots.add(newShot);
-            playerShotAvailable = false;
-            this.time.addEvent({
-                delay: 333,
-                callback: function(){
-                    playerShotAvailable = true;
-                },
-                loop: false
-            })
-        }
+        //this.turret2.update();
         
-        this.physics.world.collide(this.player, this.enemyGroup, this.collisionOccurred, null, this);
-        this.physics.world.collide(this.enemyGroup, this.shots, this.enemyHitByPlayer, null, this);
+        this.physics.world.overlap(this.enemyGroup, this.shots, this.enemyHitByPlayer, null, this);
     }
 
     addEnemy() {
@@ -67,7 +64,7 @@ class Play extends Phaser.Scene {
     enemyHitByPlayer(enemy, shot){
         shot.destroy();
         enemy.health -= 1;
-        console.log(enemy.health);
+        console.log("hit");
         //deal damage to the enemy
     }
 
