@@ -38,7 +38,7 @@ class Play extends Phaser.Scene {
                         let newTime = 1000 * Phaser.Math.Between(1, 3);
                         let randomYEstimate = Phaser.Math.Between(-25, 25);
                         this.time.delayedCall(newTime, () => {
-                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 50 * speedPosition, 'crab', 'Shore');
+                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 25 * speedPosition, 'crab', 'Shore');
                         });
                     });
                 }
