@@ -17,5 +17,9 @@ class TurretShot extends Phaser.Physics.Arcade.Sprite {
         if(this.x < 0 || this.x > game.config.width || this.y < 0 || this.y > game.config.height){
             this.destroy();
         }
+
+        if(this.target.isDead){
+            this.destroy();
+        }
     }
 }

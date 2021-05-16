@@ -35,6 +35,11 @@ class Menu extends Phaser.Scene {
         this.add.text(game.config.width/2, game.config.height/3 - borderUISize, 'Sea, Sand and Shore', menuConfig).setOrigin(0.5);
         menuConfig.fontSize = '30px';
         this.add.text(game.config.width/2, game.config.height/3 + borderPadding * 2,'A Tower Defense Game', menuConfig).setOrigin(0.5);
+        menuConfig.fontSize = '24px';
+        this.add.text(game.config.width/2, game.config.height/3 + 2* borderUISize, `Click on the black circles, then the popup button, to get a tower of that button's color.`, menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/3 + 3* borderUISize, `Control the Player circle with Up/Down arrows to rotate, and Right to shoot`, menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/3 + 4* borderUISize, `Press ENTER to start`, menuConfig).setOrigin(0.5);
+
         // key inputs
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         // list of scenes
