@@ -82,7 +82,7 @@ class Play extends Phaser.Scene {
                         let newTime = 1000 * Phaser.Math.Between(1, 3);
                         let randomYEstimate = Phaser.Math.Between(-25, 25);
                         this.time.delayedCall(newTime, () => {
-                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 200 * speedPosition, 'crab', 'Shore');
+                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 20 * speedPosition, 'crab', 'Shore');
                             // signals the player that a wave is coming through 3 sfx playing at intervals
                             this.spawnSound.play();
                         });
@@ -100,6 +100,8 @@ class Play extends Phaser.Scene {
         }
 
         this.player.update();
+        // checks collision on the tower
+        this.physics.world.collide(this.tower, this.enemyGroup, this.collisionOccurred, null, this);
 
         if(keyRIGHT.isDown && playerShotAvailable){
             new PlayerShot(this, this.player.x + this.player.width/2 * Math.cos(this.player.rotation), this.player.y + this.player.height/2 * Math.sin(this.player.rotation), 'shot', this.player.rotation).setOrigin(0.5, 0.5);
@@ -112,10 +114,6 @@ class Play extends Phaser.Scene {
                 loop: false
             })
         }
-
-        // checks collision on the tower
-        this.physics.world.collide(this.tower, this.enemyGroup, this.collisionOccurred, null, this);
-
     }
 
     // parameters: x Position, y Position, speed, type of enemy, environment of enemy
