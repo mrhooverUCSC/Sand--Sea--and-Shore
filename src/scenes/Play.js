@@ -28,7 +28,11 @@ class Play extends Phaser.Scene {
 
         // Tower
         this.tower = new Tower(this, game.config.width / 2, game.config.height - 100, 'tower').setOrigin(0.5, 0.5);
-        this.enemyGroup = this.add.group({
+        this.enemyLeft = this.add.group({
+            runChildUpdate: true
+        });
+
+        this.enemyRight = this.add.group({
             runChildUpdate: true
         });
 
@@ -38,14 +42,15 @@ class Play extends Phaser.Scene {
         });
 
         this.player = new Player(this, game.config.width / 2, game.config.height / 4, 'player', this.shots).setOrigin(0.5, 0.5);
-        this.turret = new Turret(this, 3 * game.config.width/5, 2*game.config.height/5, this.enemyGroup, this.shots).setOrigin(0.5, 0.5);
-        this.turret2 = new Turret(this, 2 * game.config.width/5, 2*game.config.height/5, this.enemyGroup, this.shots).setOrigin(0.5, 0.5);
+        this.turret = new Turret(this, 3 * game.config.width/5, 2*game.config.height/5, this.enemyRight, this.shots).setOrigin(0.5, 0.5);
+        this.turret2 = new Turret(this, 2 * game.config.width/5, 2*game.config.height/5, this.enemyLeft, this.shots).setOrigin(0.5, 0.5);
 
         this.environmentTypes = ["Sea", "Sky", "Shore"];
 
         // spawns a wave of enemies in the first 3 seconds
         this.time.delayedCall(3000, () => {
             let sideZones = [0, game.config.width];     // [leftZone, rightZone]
+            let enemyGroups = [this.enemyLeft, this.enemyRight]
             for(let i = 0; i < 2; i++) {    // spawns 2 separate waves for the left and right side
                 let speedPosition = Math.pow(-1, i);    // to invert the signs in order to apply the correct velocity
                 let randomAmount = Phaser.Math.Between(5, 10);
@@ -55,7 +60,7 @@ class Play extends Phaser.Scene {
                         let newTime = 1000 * Phaser.Math.Between(1, 3);
                         let randomYEstimate = Phaser.Math.Between(-25, 25);
                         this.time.delayedCall(newTime, () => {
-                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 20 * speedPosition, 'crab', 'Shore');
+                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 20 * speedPosition, 'crab', 'Shore', enemyGroups[i]);
                         });
                     });
                 }
@@ -68,17 +73,19 @@ class Play extends Phaser.Scene {
         this.turret.update();
         this.turret2.update();
         
-        this.physics.world.overlap(this.enemyGroup, this.shots, this.enemyHitByPlayer, null, this);
+        this.physics.world.overlap(this.enemyRight, this.shots, this.enemyHitByPlayer, null, this);
+        this.physics.world.overlap(this.enemyLeft, this.shots, this.enemyHitByPlayer, null, this);
     }
 
     // parameters: x Position, y Position, speed, type of enemy, environment of enemy
-    addEnemy(xZone, yZone, speed, type, environment) {
+    addEnemy(xZone, yZone, speed, type, environment, eg) {
         let newEnemy = new Enemy(this, xZone, yZone, type, environment, speed);
-        this.enemyGroup.add(newEnemy);
+        eg.add(newEnemy);
     }
 
     enemyHitByPlayer(enemy, shot){
         shot.destroy();
+        enemy.destroy();
         enemy.health -= 1;
         console.log("hit");
         //deal damage to the enemy
