@@ -15,7 +15,7 @@ class Menu extends Phaser.Scene {
         // background
         this.oceanBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'oceanBackground').setOrigin(0, 0);
 
-        // menu text configuration
+        // menu text configuration  
         let menuConfig = {
             fontFamily: 'callaghands',
             fontSize: '40px',

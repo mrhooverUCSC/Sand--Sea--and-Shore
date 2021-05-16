@@ -32,7 +32,6 @@ class Play extends Phaser.Scene {
             for(let i = 0; i < 2; i++) {    // spawns 2 separate waves for the left and right side
                 let speedPosition = Math.pow(-1, i);
                 let randomAmount = Phaser.Math.Between(5, 10);
-                console.log(`${i} spawned: ${randomAmount}`);
                 // spawns the single hordes in intervals
                 for(let j = 0; j < randomAmount; j++) {
                     this.time.delayedCall(2000, () => {
@@ -70,7 +69,6 @@ class Play extends Phaser.Scene {
 
     // parameters: x Position, y Position, speed, type of enemy, environment of enemy
     addEnemy(xZone, yZone, speed, type, environment) {
-        console.log("spawned enemy");
         let newEnemy = new Enemy(this, xZone, yZone, type, environment, speed);
         this.enemyGroup.add(newEnemy);
     }
