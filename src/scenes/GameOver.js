@@ -35,7 +35,7 @@ class GameOver extends Phaser.Scene {
     }
 
     update() {
-        if(Phaser.Input.Keyboard.JustDown(keyENTER)) {   // enter play scene
+        if(Phaser.Input.Keyboard.JustDown(keyENTER)) {   // enter menu scene
             this.scene.start("menuScene");
         }
     }
