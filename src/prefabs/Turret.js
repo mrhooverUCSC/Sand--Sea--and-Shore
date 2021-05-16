@@ -11,7 +11,6 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.scene = scene;
         this.enemies = enemies;
         this.shots = shots;
-        console.log(this);
 
         scene.add.existing(this); //draw
         scene.physics.add.existing(this); //add physics so it can rotate
