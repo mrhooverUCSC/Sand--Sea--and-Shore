@@ -3,6 +3,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture);
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        this.scene = scene;
+        this.speed = speed;
         this.setVelocityX(speed);
         this.body.onCollide = true;
         this.body.setImmovable(true);
@@ -21,11 +23,10 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.wave += 0.05;
             this.y += Math.sin(this.wave) * 2;
         }
+    }
 
-        if(this.x < -this.width) {      // right to left
-//        if(this.x > game.config.width + this.width) {     // left to right
-            console.log("destroyed");
-            this.destroy();
-        }
+    enemyDeath() {
+        this.scene.crabDeath.play();
+        this.destroy();
     }
 }
