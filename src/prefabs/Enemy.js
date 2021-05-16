@@ -9,6 +9,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.body.onCollide = true;
         this.body.setImmovable(true);
         this.health = 100;
+        this.isDead = false;
 
         this.environment = environment;
         this.wave = -Math.PI;
@@ -27,6 +28,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     enemyDeath() {
         this.scene.crabDeath.play();
+        this.isDead = true;
         this.destroy();
     }
 }
