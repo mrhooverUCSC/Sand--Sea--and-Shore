@@ -11,6 +11,10 @@ class Play extends Phaser.Scene {
         this.load.image('crab', 'images/newCrab.jpg');
         this.load.image('butcher', 'images/ButcherBall.png');
         this.load.image('butcherShot', 'images/ButcherShot.png');
+        this.load.image('butcherOption', 'images/ButcherOption.png');
+        this.load.image('waiter', 'images/WaiterBall.png');
+        this.load.image('waiterShot', 'images/WaiterShot.png');
+        this.load.image('waiterOption', 'images/WaiterOption.png');
         this.load.image('blank', 'images/Blank.png');
     }
 
@@ -31,10 +35,8 @@ class Play extends Phaser.Scene {
         });
 
         this.player = new Player(this, game.config.width / 2, game.config.height / 4, 'player', this.shots).setOrigin(0.5, 0.5);
-        this.turret = new Turret(this, 3 * game.config.width/5, 2*game.config.height/5, 'butcher', this.enemyGroup, this.shots).setOrigin(0.5, 0.5);
-        //this.turret2 = new Turret(this, 2 * game.config.width/5, 2*game.config.height/5, 'butcher', this.enemyGroup, this.shots).setOrigin(0.5, 0.5);
-        this.defense1 = this.add.sprite(game.config.width/5, game.config.height/5, 'blank').setOrigin(0.5, 0.5);
-        this.defense1.setInteractive().on('pointerdown', this.placeTurret, "hello"); //set interactable, then call hello() on click.
+        this.turret = new Turret(this, 3 * game.config.width/5, 2*game.config.height/5, this.enemyGroup, this.shots).setOrigin(0.5, 0.5);
+        this.turret2 = new Turret(this, 2 * game.config.width/5, 2*game.config.height/5, this.enemyGroup, this.shots).setOrigin(0.5, 0.5);
 
         // adds new enemy when starting after 3 seconds
         this.time.delayedCall(3000, () => {
@@ -44,14 +46,10 @@ class Play extends Phaser.Scene {
 
     }
 
-    placeTurret(e){
-        console.log(e);
-    }
-
     update() {
         this.player.update();
         this.turret.update();
-        //this.turret2.update();
+        this.turret2.update();
         
         this.physics.world.overlap(this.enemyGroup, this.shots, this.enemyHitByPlayer, null, this);
     }
