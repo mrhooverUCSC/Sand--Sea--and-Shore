@@ -100,7 +100,7 @@ class Play extends Phaser.Scene {
                         let newTime = 1000 * Phaser.Math.Between(1, 3);
                         let randomYEstimate = Phaser.Math.Between(-25, 25);
                         this.time.delayedCall(newTime, () => {
-                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 200 * speedPosition, 'crab', 'Shore', enemyGroups[i]);
+                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 20 * speedPosition, 'crab', 'Shore', enemyGroups[i]);
                             // signals the player that a wave is coming through 3 sfx playing at intervals
                             this.spawnSound.play();
                         });
