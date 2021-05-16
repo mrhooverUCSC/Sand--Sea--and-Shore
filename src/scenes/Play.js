@@ -121,6 +121,8 @@ class Play extends Phaser.Scene {
         
         this.physics.world.overlap(this.enemyRight, this.shots, this.enemyHitByPlayer, null, this);
         this.physics.world.overlap(this.enemyLeft, this.shots, this.enemyHitByPlayer, null, this);
+        // checks collision on the tower
+        this.physics.world.collide(this.tower, this.enemyGroup, this.collisionOccurred, null, this);
     }
 
     // parameters: x Position, y Position, speed, type of enemy, environment of enemy, enemy group
