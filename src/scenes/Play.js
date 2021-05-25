@@ -49,6 +49,8 @@ class Play extends Phaser.Scene {
 
         // Tower
         this.tower = new Tower(this, game.config.width / 2, game.config.height - 100, 'tower').setOrigin(0.5, 0.5);
+
+        //Enemy groups
         this.enemyLeft = this.add.group({
             runChildUpdate: true
         });
@@ -76,7 +78,7 @@ class Play extends Phaser.Scene {
             loop: false 
         });
 
-        //The player character's shots
+        //The player character and turret's shots
         this.shots = this.add.group({
             runChildUpdate: true
         });
@@ -119,8 +121,8 @@ class Play extends Phaser.Scene {
         this.turret.update();
         this.turret2.update();
         
-        this.physics.world.overlap(this.enemyRight, this.shots, this.enemyHitByPlayer, null, this);
-        this.physics.world.overlap(this.enemyLeft, this.shots, this.enemyHitByPlayer, null, this);
+        //this.physics.world.overlap(this.enemyRight, this.shots, this.enemyHitByPlayer, null, this);
+        //this.physics.world.overlap(this.enemyLeft, this.shots, this.enemyHitByPlayer, null, this);
         // checks collision on the tower
         this.physics.world.collide(this.tower, this.enemyLeft, this.collisionOccurred, null, this);
         this.physics.world.collide(this.tower, this.enemyRight, this.collisionOccurred, null, this);

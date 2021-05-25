@@ -1,7 +1,12 @@
 class TurretShot extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, texture, rotation, target) {
+    constructor(scene, x, y, texture, rotation, target, damage) {
         super(scene, x, y, texture);
+        this.target += this.damage;
         this.target = target;
+        this.s = scene;
+        this.target.expectedDamage += damage;
+        console.log(target, target.expectedDamage, target.health);
+        this.damage = damage;
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.rotation = rotation;
@@ -20,6 +25,17 @@ class TurretShot extends Phaser.Physics.Arcade.Sprite {
 
         if(this.target.isDead){
             this.destroy();
+        }
+
+        this.s.physics.world.overlap(this.target, this, this.enemyHit, null, this);
+    }
+
+    enemyHit(enemy, shot){
+        shot.destroy();
+        enemy.expectedDamage -= this.damage;
+        enemy.health -= this.damage; //deal damage
+        if(enemy.health <= 0){
+            enemy.enemyDeath();
         }
     }
 }

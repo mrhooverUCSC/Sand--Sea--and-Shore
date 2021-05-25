@@ -10,7 +10,12 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
 
         this.scene = scene;
         this.enemies = enemies;
-        this.shots = shots;
+        //this.shots = shots;
+        this.shots = scene.add.group({
+            runChildUpdate: true
+        });
+        this.damage = 25;
+        this.target = null;
 
         scene.add.existing(this); //draw
         scene.physics.add.existing(this); //add physics so it can rotate
@@ -24,19 +29,32 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         if(this.enemies.getLength() != 0){ //if there is an enemy
-            this.setRotation(Phaser.Math.Angle.Between(this.x, this.y, this.enemies.getChildren()[0].x, this.enemies.getChildren()[0].y)); //aim at it
-            if(this.ready == true){ //if ready to shoot, shoot
-                let shot = new TurretShot(this.scene, this.x + this.width/2 * Math.cos(this.rotation), this.y + this.height/2 * Math.sin(this.rotation), 'butcherShot', this.rotation, this.enemies.getChildren()[0]).setOrigin(0.5, 0.5);
-                this.shots.add(shot);
-                this.scene.throwingSfx.play();
-                this.ready = false;
-                this.scene.time.addEvent({
-                    delay: this.reloadSpeed,
-                    callback: this.shotAvailable,
-                    callbackScope: this,
-                    loop: false
-                }); 
+            //get the first enemy that isn't expected to die
+            this.target = null;
+            for(var i = 0; i < this.enemies.getChildren().length; i++){
+                if(this.enemies.getChildren()[i].expectedDamage < this.enemies.getChildren()[i].health){
+                    this.target = this.enemies.getChildren()[i];
+                    break;
+                }
             }
+
+            //if there is an enemy to shoot, aim then shoot at it
+            if(this.target != null){
+                this.setRotation(Phaser.Math.Angle.Between(this.x, this.y, this.target.x, this.target.y)); //aim at it; this.enemies.getChildren()[0].x
+                if(this.ready == true){ //if ready to shoot, shoot
+                    let shot = new TurretShot(this.scene, this.x + this.width/2 * Math.cos(this.rotation), this.y + this.height/2 * Math.sin(this.rotation), 'butcherShot', this.rotation, this.target, this.damage).setOrigin(0.5, 0.5);
+                    this.shots.add(shot);
+                    this.scene.throwingSfx.play();
+                    this.ready = false;
+                    this.scene.time.addEvent({
+                        delay: this.reloadSpeed,
+                        callback: this.shotAvailable,
+                        callbackScope: this,
+                        loop: false
+                    }); 
+                }
+            }
+
         }
     }
 
@@ -58,6 +76,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.waiterOption.destroy();
 
         this.reloadSpeed = 1000;
+        this.damage = 100;
     }
 
     setWaiter(){
@@ -68,6 +87,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.waiterOption.destroy();
 
         this.reloadSpeed = 250;
+        this.damage = 25;
     }
 
     shotAvailable(){
