@@ -11,9 +11,32 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.health = 100;
         this.isDead = false;
 
+        this.tint = 0xff0000;
+
         this.environment = environment;
         this.wave = -Math.PI;
         this.originalY = this.y;
+
+        this.scene.time.addEvent({
+            delay: 3000,
+            callback: this.switchTints,
+            loop: true
+        });
+    }
+
+    create() {
+
+    }
+
+    switchTints() {
+        console.log(`switch ${this.tintFill}`);
+        if(this.tintFill == false) {
+            this.tintFill = true;
+            console.log("show tint");
+        } else {
+            this.tintFill = false;
+            console.log("hide tint");
+        }
     }
 
     update() {

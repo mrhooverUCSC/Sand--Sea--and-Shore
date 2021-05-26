@@ -9,6 +9,10 @@ class Menu extends Phaser.Scene {
         // Received free font from:
         // https://www.1001freefonts.com/callaghands.font
         this.loadFont('callaghands', './assets/font/Callaghands.ttf');
+        this.loadFont('lostFish', './assets/font/LostFish.ttf');
+        this.loadFont('ipaSec', './assets/font/IpanemaSecco.ttf');
+        this.loadFont('seaWaveBasic', './assets/font/SeawaveBasic.ttf');
+        this.loadFont('forturn', './assets/font/Forturn.ttf');
     }
 
     create() {
@@ -17,9 +21,9 @@ class Menu extends Phaser.Scene {
 
         // menu text configuration  
         let menuConfig = {
-            fontFamily: 'callaghands',
-            fontSize: '40px',
-            backgroundColor: '#F3B141',
+            fontFamily: 'forturn',
+            fontSize: '60px',
+            //backgroundColor: '#F3B141',
             color: '#000000',
             align: 'center',
             padding: {
@@ -36,6 +40,7 @@ class Menu extends Phaser.Scene {
         menuConfig.fontSize = '30px';
         this.add.text(game.config.width/2, game.config.height/3 + borderPadding * 2,'A Tower Defense Game', menuConfig).setOrigin(0.5);
         menuConfig.fontSize = '24px';
+        menuConfig.fontFamily = 'ipaSec';
         this.add.text(game.config.width/2, game.config.height/3 + 2* borderUISize, `Click on the black circles, then the popup button, to get a tower of that button's color.`, menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/3 + 3* borderUISize, `Control the Player circle with Up/Down arrows to rotate, and Right to shoot`, menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/3 + 4* borderUISize, `Press ENTER to start`, menuConfig).setOrigin(0.5);

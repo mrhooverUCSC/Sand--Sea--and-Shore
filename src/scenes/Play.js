@@ -86,27 +86,11 @@ class Play extends Phaser.Scene {
         this.turret2 = new Turret(this, 2 * game.config.width/5, 2*game.config.height/5, this.enemyLeft, this.shots).setOrigin(0.5, 0.5);
 
         this.environmentTypes = ["Sea", "Sky", "Shore"];
+        this.waves = new Waves(this);
 
-        // spawns a wave of enemies in the first 3 seconds
+        // // spawns a wave of enemies in the first 3 seconds
         this.time.delayedCall(3000, () => {
-            let sideZones = [0, game.config.width];     // [leftZone, rightZone]
-            let enemyGroups = [this.enemyLeft, this.enemyRight]
-            for(let i = 0; i < 2; i++) {    // spawns 2 separate waves for the left and right side
-                let speedPosition = Math.pow(-1, i);    // to invert the signs in order to apply the correct velocity
-                let randomAmount = Phaser.Math.Between(5, 10);
-                // spawns the single hordes in intervals
-                for(let j = 0; j < randomAmount; j++) {
-                    this.time.delayedCall(2000, () => {
-                        let newTime = 1000 * Phaser.Math.Between(1, 3);
-                        let randomYEstimate = Phaser.Math.Between(-25, 25);
-                        this.time.delayedCall(newTime, () => {
-                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 25 * speedPosition, 'crab', 'Shore', enemyGroups[i]);
-                            // signals the player that a wave is coming through 3 sfx playing at intervals
-                            this.spawnSound.play();
-                        });
-                    });
-                }
-            }
+            this.waves.spawn();
         });
     }
 
