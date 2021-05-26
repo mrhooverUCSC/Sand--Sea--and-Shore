@@ -2,7 +2,7 @@
 // Then, on click, it can be upgraded into an actual tower.
 // Once ugpraded, can no longer be interactable.
 class Turret extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, enemies, shots) {
+    constructor(scene, x, y, enemies) {
         super(scene, x, y, 'blank');
 
         this.setButcher = this.setButcher.bind(this); //must BIND these functions in order 
@@ -10,7 +10,6 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
 
         this.scene = scene;
         this.enemies = enemies;
-        //this.shots = shots;
         this.shots = scene.add.group({
             runChildUpdate: true
         });
