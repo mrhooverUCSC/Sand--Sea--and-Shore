@@ -9,6 +9,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.body.onCollide = true;
         this.body.setImmovable(true);
         this.health = 100;
+        this.expectedDamage = 0; // the amount of damage that will come from turret shots already aimed
         this.isDead = false;
 
         this.environment = environment;

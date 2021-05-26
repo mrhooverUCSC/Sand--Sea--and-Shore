@@ -46,9 +46,12 @@ class Play extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         // Tower
         this.tower = new Tower(this, game.config.width / 2, game.config.height - 100, 'tower').setOrigin(0.5, 0.5);
+
+        //Enemy groups
         this.enemyLeft = this.add.group({
             runChildUpdate: true
         });
@@ -76,14 +79,14 @@ class Play extends Phaser.Scene {
             loop: false 
         });
 
-        //The player character's shots
+        //The player character and turret's shots
         this.shots = this.add.group({
             runChildUpdate: true
         });
 
         this.player = new Player(this, game.config.width / 2, game.config.height / 4, 'player', this.shots).setOrigin(0.5, 0.5);
-        this.turret = new Turret(this, 3 * game.config.width/5, 2*game.config.height/5, this.enemyRight, this.shots).setOrigin(0.5, 0.5);
-        this.turret2 = new Turret(this, 2 * game.config.width/5, 2*game.config.height/5, this.enemyLeft, this.shots).setOrigin(0.5, 0.5);
+        this.turret = new Turret(this, 3 * game.config.width/5, 2*game.config.height/5, this.enemyRight).setOrigin(0.5, 0.5);
+        this.turret2 = new Turret(this, 2 * game.config.width/5, 2*game.config.height/5, this.enemyLeft).setOrigin(0.5, 0.5);
 
         this.environmentTypes = ["Sea", "Sky", "Shore"];
 
@@ -134,8 +137,10 @@ class Play extends Phaser.Scene {
 
     enemyHitByPlayer(enemy, shot){
         shot.destroy();
-        enemy.enemyDeath();
-        enemy.health -= 1; //deal damage
+        enemy.health -= 50; //deal damage
+        if(enemy.health <= 0){
+            enemy.enemyDeath();
+        }
     }
 
     collisionOccurred() {
