@@ -89,6 +89,10 @@ class Play extends Phaser.Scene {
         });
 
         this.player = new Player(this, game.config.width / 2, game.config.height / 4, 'player', this.shots).setOrigin(0.5, 0.5);
+
+        this.leftTurrets = this.add.group({
+            
+        })
         this.turret = new Turret(this, 3 * game.config.width/5, 2*game.config.height/5, this.enemyRight).setOrigin(0.5, 0.5);
         this.turret2 = new Turret(this, 2 * game.config.width/5, 2*game.config.height/5, this.enemyLeft).setOrigin(0.5, 0.5);
         this.turret3 = new Turret(this, 3 * game.config.width/5, 3*game.config.height/5, this.enemyRight).setOrigin(0.5, 0.5);
