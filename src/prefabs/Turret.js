@@ -7,13 +7,13 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
 
         this.setButcher = this.setButcher.bind(this); //must BIND these functions in order 
         this.setWaiter = this.setWaiter.bind(this);
+        this.setFryer = this.setFryer.bind(this);
 
         this.scene = scene;
         this.enemies = enemies;
         this.shots = scene.add.group({
             runChildUpdate: true
         });
-        this.damage = 25;
         this.target = null;
 
         scene.add.existing(this); //draw
@@ -24,6 +24,8 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.ready = false; //reload ready
         this.type == 'blank'; //stores type of the turret
         this.reloadSpeed = 500;
+        this.shotSpeed = 400;
+        this.damage = 25;
     }
 
     update() {
@@ -41,7 +43,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
             if(this.target != null){
                 this.setRotation(Phaser.Math.Angle.Between(this.x, this.y, this.target.x, this.target.y)); //aim at it; this.enemies.getChildren()[0].x
                 if(this.ready == true){ //if ready to shoot, shoot
-                    let shot = new TurretShot(this.scene, this.x + this.width/2 * Math.cos(this.rotation), this.y + this.height/2 * Math.sin(this.rotation), 'butcherShot', this.rotation, this.target, this.damage).setOrigin(0.5, 0.5);
+                    let shot = new TurretShot(this.scene, this.x + this.width/2 * Math.cos(this.rotation), this.y + this.height/2 * Math.sin(this.rotation), 'butcherShot', this.rotation, this.target, this.damage, this.shotSpeed).setOrigin(0.5, 0.5);
                     this.shots.add(shot);
                     this.scene.throwingSfx.play();
                     this.ready = false;
@@ -66,27 +68,40 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.waiterOption = this.scene.add.sprite(this.x+20, this.y, 'waiterOption').setOrigin(0.5, 0.5);
         this.waiterOption.setInteractive();
         this.waiterOption.on('pointerdown', this.setWaiter); //activate on click
+
+        this.fryerOption = this.scene.add.sprite(this.x, this.y-20, 'fryerOption').setOrigin(0.5, 0.5);
+        this.fryerOption.setInteractive();
+        this.fryerOption.on('pointerdown', this.setFryer);
     }
 
     setButcher(){
-        this.ready = true;
         this.setTexture('butcher');
-        this.butcherOption.destroy();
-        this.waiterOption.destroy();
-
         this.reloadSpeed = 1000;
         this.damage = 100;
+
+        this.turretSetup();
     }
 
     setWaiter(){
-        this.ready = true;
         this.setTexture('waiter');
-
-        this.butcherOption.destroy();
-        this.waiterOption.destroy();
-
         this.reloadSpeed = 250;
         this.damage = 25;
+        this.turretSetup();
+    }
+
+    setFryer(){
+        this.setTexture('fryer');
+        this.reloadSpeed = 25;
+        this.shotSpeed = 1000;
+        this.damage = 0;
+        this.turretSetup();
+    }
+
+    turretSetup(){
+        this.ready = true;
+        this.butcherOption.destroy();
+        this.waiterOption.destroy();
+        this.fryerOption.destroy();
     }
 
     shotAvailable(){
