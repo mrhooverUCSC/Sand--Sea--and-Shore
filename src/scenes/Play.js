@@ -18,7 +18,6 @@ class Play extends Phaser.Scene {
         this.load.image('fryerShot', 'images/FryerShot.png');
         this.load.image('fryerOption', 'images/FryerOption.png');
         this.load.image('porter', 'images/PorterBall.png');
-        this.load.image('porterShot', 'images/PorterShot.png');
         this.load.image('porterOption', 'images/PorterOption.png');
 
         this.load.image('blank', 'images/Blank.png');
@@ -96,15 +95,18 @@ class Play extends Phaser.Scene {
         this.leftTurrets = this.add.group({
             runChildUpdate: true
         })
-        this.turret1 = new Turret(this, 3 * game.config.width/5, 2*game.config.height/5, this.enemyRight).setOrigin(0.5, 0.5);
-        this.leftTurrets.add(this.turret1)
+        this.turret1 = new Turret(this, 2 * game.config.width/5 + 25, 2*game.config.height/5, this.enemyLeft, this.leftTurrets).setOrigin(0.5, 0.5);
+        this.turret2 = new Turret(this, 2 * game.config.width/5 + 25, 3*game.config.height/5, this.enemyLeft, this.leftTurrets).setOrigin(0.5, 0.5);
+        this.turret3 = new Turret(this, 2 * game.config.width/5 + 25, 4*game.config.height/5, this.enemyLeft, this.leftTurrets).setOrigin(0.5, 0.5);
+        this.leftTurrets.add(this.turret1).add(this.turret2).add(this.turret3);
 
         this.rightTurrets = this.add.group({
             runChildUpdate: true
         })
-        this.turret2 = new Turret(this, 2 * game.config.width/5, 2*game.config.height/5, this.enemyLeft).setOrigin(0.5, 0.5);
-        this.turret3 = new Turret(this, 3 * game.config.width/5, 3*game.config.height/5, this.enemyRight).setOrigin(0.5, 0.5);
-        this.rightTurrets.add(this.turret2).add(this.turret3);
+        this.turret4 = new Turret(this, 3 * game.config.width/5 - 25, 2*game.config.height/5, this.enemyRight, this.rightTurrets).setOrigin(0.5, 0.5);
+        this.turret5 = new Turret(this, 3 * game.config.width/5 - 25, 3*game.config.height/5, this.enemyRight, this.rightTurrets).setOrigin(0.5, 0.5);
+        this.turret6 = new Turret(this, 3 * game.config.width/5 - 25, 4*game.config.height/5, this.enemyRight, this.rightTurrets).setOrigin(0.5, 0.5);
+        this.rightTurrets.add(this.turret4).add(this.turret5).add(this.turret6);
 
         this.environmentTypes = ["Sea", "Sky", "Shore"];
 
