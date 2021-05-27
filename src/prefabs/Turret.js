@@ -8,6 +8,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.setButcher = this.setButcher.bind(this); //must BIND these functions in order 
         this.setWaiter = this.setWaiter.bind(this);
         this.setFryer = this.setFryer.bind(this);
+        this.setPorter = this.setPorter.bind(this);
 
         this.scene = scene;
         this.enemies = enemies;
@@ -29,7 +30,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        if(this.enemies.getLength() != 0){ //if there is an enemy
+        if(this.enemies.getLength() != 0 && this.reloadSpeed !== Infinity){ //if there is an enemy
             //get the first enemy that isn't expected to die
             this.target = null;
             for(var i = 0; i < this.enemies.getChildren().length; i++){
@@ -72,6 +73,10 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.fryerOption = this.scene.add.sprite(this.x, this.y-20, 'fryerOption').setOrigin(0.5, 0.5);
         this.fryerOption.setInteractive();
         this.fryerOption.on('pointerdown', this.setFryer);
+
+        this.porterOption = this.scene.add.sprite(this.x, this.y+20, 'porterOption').setOrigin(0.5, 0.5);
+        this.porterOption.setInteractive();
+        this.porterOption.on('pointerdown', this.setPorter);
     }
 
     setButcher(){
@@ -97,11 +102,18 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.turretSetup();
     }
 
+    setPorter(){
+        this.setTexture('porter');
+        this.reloadSpeed = Infinity;
+        this.turretSetup();
+    }
+
     turretSetup(){
         this.ready = true;
         this.butcherOption.destroy();
         this.waiterOption.destroy();
         this.fryerOption.destroy();
+        this.porterOption.destroy();
     }
 
     shotAvailable(){

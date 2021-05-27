@@ -17,6 +17,9 @@ class Play extends Phaser.Scene {
         this.load.image('fryer', 'images/FryerBall.png');
         this.load.image('fryerShot', 'images/FryerShot.png');
         this.load.image('fryerOption', 'images/FryerOption.png');
+        this.load.image('porter', 'images/PorterBall.png');
+        this.load.image('porterShot', 'images/PorterShot.png');
+        this.load.image('porterOption', 'images/PorterOption.png');
 
         this.load.image('blank', 'images/Blank.png');
         this.load.image('crab', 'images/landCrab.png');
@@ -91,11 +94,17 @@ class Play extends Phaser.Scene {
         this.player = new Player(this, game.config.width / 2, game.config.height / 4, 'player', this.shots).setOrigin(0.5, 0.5);
 
         this.leftTurrets = this.add.group({
-            
+            runChildUpdate: true
         })
-        this.turret = new Turret(this, 3 * game.config.width/5, 2*game.config.height/5, this.enemyRight).setOrigin(0.5, 0.5);
+        this.turret1 = new Turret(this, 3 * game.config.width/5, 2*game.config.height/5, this.enemyRight).setOrigin(0.5, 0.5);
+        this.leftTurrets.add(this.turret1)
+
+        this.rightTurrets = this.add.group({
+            runChildUpdate: true
+        })
         this.turret2 = new Turret(this, 2 * game.config.width/5, 2*game.config.height/5, this.enemyLeft).setOrigin(0.5, 0.5);
         this.turret3 = new Turret(this, 3 * game.config.width/5, 3*game.config.height/5, this.enemyRight).setOrigin(0.5, 0.5);
+        this.rightTurrets.add(this.turret2).add(this.turret3);
 
         this.environmentTypes = ["Sea", "Sky", "Shore"];
 
@@ -128,9 +137,9 @@ class Play extends Phaser.Scene {
         }
 
         this.player.update();
-        this.turret.update();
-        this.turret2.update();
-        this.turret3.update();
+        //this.turret.update();
+        //this.turret2.update();
+        //this.turret3.update();
         
         this.physics.world.overlap(this.enemyRight, this.shots, this.enemyHitByPlayer, null, this);
         this.physics.world.overlap(this.enemyLeft, this.shots, this.enemyHitByPlayer, null, this);

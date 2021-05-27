@@ -42,7 +42,7 @@ class TurretShot extends Phaser.Physics.Arcade.Sprite {
             enemy.expectedDamage += 25;
         }
         else if(enemy.weakened){
-            enemy.health -= 2 * this.damage;
+            enemy.health -= 25 + this.damage;
         }
         else{
             enemy.health -= this.damage; //deal damage
