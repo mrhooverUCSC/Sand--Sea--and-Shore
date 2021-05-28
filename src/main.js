@@ -26,6 +26,10 @@ let oceanSpeed = 5;
 
 // controls
 let keyRIGHT, keyUP, keyDOWN, keyENTER, keySHIFT;
+
+// drop loot management
+let value, dropLoot = 0;
+
 /*
 CMPM 120
 Iron Sites

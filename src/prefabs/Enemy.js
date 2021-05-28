@@ -32,5 +32,12 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.scene.crabDeath.play();
         this.isDead = true;
         this.destroy();
+
+        value = Phaser.Math.Between(1, 100);
+        console.log('The value is' + value);
+        if(value % 2 == 0) {
+            dropLoot++;
+        }
+        console.log('Droploot is now ' + dropLoot);
     }
 }
