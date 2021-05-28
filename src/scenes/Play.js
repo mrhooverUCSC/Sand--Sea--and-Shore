@@ -16,7 +16,13 @@ class Play extends Phaser.Scene {
         this.load.image('waiterOption', 'images/WaiterOption.png');
         this.load.image('blank', 'images/Blank.png');
         this.load.image('crab', 'images/landCrab.png');
-        this.load.image('tower', 'images/tower.png');
+
+        this.load.atlas('tower', 'tower/spritesheet (1).png', 'tower/sprites (1).json');
+        //this.load.image('tower', 'images/tower.png');
+
+        // healthbar for tower
+        this.load.image('redBAR', 'tower/red_bar.png');
+        this.load.image('greenBAR', 'tower/green_bar.png');
 
         this.load.audio('crabSpawn', ['audio/crab-claw-pincer.mp3']);
         this.load.audio('crabDeath', ['audio/crab-shell-remove.mp3']);
@@ -46,9 +52,28 @@ class Play extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // Tower
         this.tower = new Tower(this, game.config.width / 2, game.config.height - 100, 'tower').setOrigin(0.5, 0.5);
+        this.add.image(this.tower.x, this.tower.y - 125, 'redBAR').setOrigin(0.5, 0.5);
+        this.add.image(this.tower.x, this.tower.y - 125, 'greenBAR').setOrigin(0.5, 0.5);
+
+        // different frames for tower
+        this.anims.create({
+            key: 'levelUP',
+            frames: [
+                {frame: 'level_1'},
+                {frame: 'level_2'},
+                {frame: 'level_3'},
+                {frame: "level_4"}
+            ],
+            defaultTextureKey: 'tower',
+        
+            // time
+            duration: 2000,
+        });
+
         this.enemyLeft = this.add.group({
             runChildUpdate: true
         });
@@ -115,6 +140,11 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
         }
 
+        // changes through tower's levels
+        if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
+            this.tower.anims.play('levelUP');
+        }
+
         this.player.update();
         this.turret.update();
         this.turret2.update();
@@ -138,7 +168,13 @@ class Play extends Phaser.Scene {
         enemy.health -= 1; //deal damage
     }
 
-    collisionOccurred() {
-        this.scene.start('gameOverScene');
+    collisionOccurred(enemy, tower) {
+        //enemy.enemyDeath();
+        tower.health -= 25;
+        console.log(tower.health);
+        if(tower.health == 0) {
+            //tower.towerDestroyed();
+            this.scene.start('gameOverScene');
+        }
     }
 }
