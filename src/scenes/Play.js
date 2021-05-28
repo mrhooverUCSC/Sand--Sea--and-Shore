@@ -56,8 +56,8 @@ class Play extends Phaser.Scene {
 
         // Tower
         this.tower = new Tower(this, game.config.width / 2, game.config.height - 100, 'tower').setOrigin(0.5, 0.5);
-        this.add.image(this.tower.x, this.tower.y - 125, 'redBAR').setOrigin(0.5, 0.5);
-        this.add.image(this.tower.x, this.tower.y - 125, 'greenBAR').setOrigin(0.5, 0.5);
+        this.add.image(this.tower.x + 5, this.tower.y - 125, 'redBAR').setOrigin(0.5, 0.5);
+        this.add.image(this.tower.x + 5, this.tower.y - 125, 'greenBAR').setOrigin(0.5, 0.5);
 
         // different frames for tower
         this.anims.create({
@@ -168,12 +168,12 @@ class Play extends Phaser.Scene {
         enemy.health -= 1; //deal damage
     }
 
-    collisionOccurred(enemy, tower) {
-        //enemy.enemyDeath();
+    collisionOccurred(tower, enemy) {
+        enemy.enemyDeath();
         tower.health -= 25;
         console.log(tower.health);
-        if(tower.health == 0) {
-            //tower.towerDestroyed();
+        if(tower.health <= 0) {
+            tower.towerDestroyed();
             this.scene.start('gameOverScene');
         }
     }
