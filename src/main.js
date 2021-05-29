@@ -26,6 +26,7 @@ let oceanSpeed = 5;
 
 // controls
 let keyRIGHT, keyUP, keyDOWN, keyENTER, keySPACE;
+let redBar, greenBar;
 /*
 CMPM 120
 Iron Sites

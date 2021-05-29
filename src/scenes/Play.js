@@ -15,7 +15,7 @@ class Play extends Phaser.Scene {
         this.load.image('waiterShot', 'images/WaiterShot.png');
         this.load.image('waiterOption', 'images/WaiterOption.png');
         this.load.image('blank', 'images/Blank.png');
-        this.load.image('crab', 'images/landCrab.png');
+        this.load.image('crab', 'referenceMaterial/temp_crab.jpg');
 
         this.load.atlas('tower', 'tower/spritesheet (1).png', 'tower/sprites (1).json');
         //this.load.image('tower', 'images/tower.png');
@@ -56,8 +56,8 @@ class Play extends Phaser.Scene {
 
         // Tower
         this.tower = new Tower(this, game.config.width / 2, game.config.height - 100, 'tower').setOrigin(0.5, 0.5);
-        this.add.image(this.tower.x + 5, this.tower.y - 125, 'redBAR').setOrigin(0.5, 0.5);
-        this.add.image(this.tower.x + 5, this.tower.y - 125, 'greenBAR').setOrigin(0.5, 0.5);
+        redBar = this.add.image(this.tower.x + 5, this.tower.y - 125, 'redBAR').setOrigin(0.5, 0.5);
+        greenBar = this.add.image(this.tower.x + 5, this.tower.y - 125, 'greenBAR').setOrigin(0.5, 0.5);
 
         // different frames for tower
         this.anims.create({
@@ -154,6 +154,8 @@ class Play extends Phaser.Scene {
         // checks collision on the tower
         this.physics.world.collide(this.tower, this.enemyLeft, this.collisionOccurred, null, this);
         this.physics.world.collide(this.tower, this.enemyRight, this.collisionOccurred, null, this);
+
+        //greenBar.setTo(this.tower.health / this.tower.maxHealth, 1);
     }
 
     // parameters: x Position, y Position, speed, type of enemy, environment of enemy, enemy group
