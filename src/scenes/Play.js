@@ -56,8 +56,8 @@ class Play extends Phaser.Scene {
 
         // Tower
         this.tower = new Tower(this, game.config.width / 2, game.config.height - 100, 'tower').setOrigin(0.5, 0.5);
-        redBar = this.add.image(this.tower.x + 5, this.tower.y - 125, 'redBAR').setOrigin(0.5, 0.5);
-        greenBar = this.add.image(this.tower.x + 5, this.tower.y - 125, 'greenBAR').setOrigin(0.5, 0.5);
+        redBar = this.add.image(this.tower.x - 140, this.tower.y - 225, 'redBAR').setOrigin(0, 0);
+        greenBar = this.add.image(this.tower.x - 140, this.tower.y - 225, 'greenBAR').setOrigin(0, 0);
 
         // different frames for tower
         this.anims.create({
@@ -155,7 +155,7 @@ class Play extends Phaser.Scene {
         this.physics.world.collide(this.tower, this.enemyLeft, this.collisionOccurred, null, this);
         this.physics.world.collide(this.tower, this.enemyRight, this.collisionOccurred, null, this);
 
-        //greenBar.setTo(this.tower.health / this.tower.maxHealth, 1);
+        greenBar.setScale(this.tower.health / this.tower.maxHealth, 1);
     }
 
     // parameters: x Position, y Position, speed, type of enemy, environment of enemy, enemy group
