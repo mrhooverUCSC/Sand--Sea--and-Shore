@@ -21,8 +21,10 @@ class Play extends Phaser.Scene {
         this.load.image('porterOption', 'images/PorterOption.png');
 
         this.load.image('blank', 'images/Blank.png');
-        this.load.image('crab', 'images/landCrab.png');
-        this.load.image('tower', 'images/tower.png');
+        this.load.image('crab', 'referenceMaterial/temp_crab.jpg');
+        this.load.atlas('tower', 'referenceMaterial/spritesheet (1).png', 'referenceMaterial/sprites (1).json');
+        this.load.image('redBAR', 'images/red_bar.png');
+        this.load.image('greenBAR', 'images/green_bar.png');
 
         this.load.audio('crabSpawn', ['audio/crab-claw-pincer.mp3']);
         this.load.audio('crabDeath', ['audio/crab-shell-remove.mp3']);
@@ -30,7 +32,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        this.oceanBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'oceanBackground').setOrigin(0, 0);
+        this.beachBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'beachBackground').setOrigin(0, 0);
         let textConfig = {
             fontFamily: 'callaghands',
             fontSize: '20px',
@@ -53,9 +55,29 @@ class Play extends Phaser.Scene {
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // Tower
         this.tower = new Tower(this, game.config.width / 2, game.config.height - 100, 'tower').setOrigin(0.5, 0.5);
+        
+        // health bar for tower
+        redBar = this.add.image(this.tower.x - 140, this.tower.y - 225, 'redBAR').setOrigin(0, 0);
+        greenBar = this.add.image(this.tower.x - 140, this.tower.y - 225, 'greenBAR').setOrigin(0, 0);
+
+        // different frames for tower
+        this.anims.create({
+            key: 'levelUP',
+            frames: [
+                {frame: 'level_1'},
+                {frame: 'level_2'},
+                {frame: 'level_3'},
+                {frame: "level_4"}
+            ],
+            defaultTextureKey: 'tower',
+        
+            // time
+            duration: 2000,
+        });
 
         //Enemy groups
         this.enemyLeft = this.add.group({
@@ -109,33 +131,34 @@ class Play extends Phaser.Scene {
         this.rightTurrets.add(this.turret4).add(this.turret5).add(this.turret6);
 
         this.environmentTypes = ["Sea", "Sky", "Shore"];
+        this.waves = new Waves(this);
+        this.zones = [0, game.config.height - 100,                  // bottom left
+                      game.config.width, game.config.height - 100,  // bottom right
+                      0, game.config.height / 2,                    // top left
+                      game.config.width, game.config.height / 2];   // top right
 
         // spawns a wave of enemies in the first 3 seconds
         this.time.delayedCall(3000, () => {
-            let sideZones = [0, game.config.width];     // [leftZone, rightZone]
-            let enemyGroups = [this.enemyLeft, this.enemyRight]
-            for(let i = 0; i < 2; i++) {    // spawns 2 separate waves for the left and right side
-                let speedPosition = Math.pow(-1, i);    // to invert the signs in order to apply the correct velocity
-                let randomAmount = Phaser.Math.Between(50, 100);
-                // spawns the single hordes in intervals
-                for(let j = 0; j < randomAmount; j++) {
-                    this.time.delayedCall(2000, () => {
-                        let newTime = 1000 * Phaser.Math.Between(1, 3);
-                        let randomYEstimate = Phaser.Math.Between(-25, 25);
-                        this.time.delayedCall(newTime, () => {
-                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 1 * speedPosition, 'crab', 'Shore', enemyGroups[i]);
-                            // signals the player that a wave is coming through 3 sfx playing at intervals
-                            this.spawnSound.play();
-                        });
-                    });
-                }
-            }
+            // spawns each zone once for now
+            let speed = 25;
+            // sea enemies
+            this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10), speed, this.environmentTypes[0], 'crab');
+            this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10), speed, this.environmentTypes[0], 'crab');
+            // sky enemies
+            this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10), speed, this.environmentTypes[1], 'crab');
+            this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10), speed, this.environmentTypes[1], 'crab');
+            console.log(`Number of Enemies in Current Wave: ${this.waves.numberOfEnemies}`);
         });
     }
 
     update() {
         if(Phaser.Input.Keyboard.JustDown(keyENTER)) {   // enter menu scene
             this.scene.start("menuScene");
+        }
+
+        // change through tower levels
+        if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
+            this.tower.anims.play('levelUP');
         }
 
         this.player.update();
@@ -148,6 +171,9 @@ class Play extends Phaser.Scene {
         // checks collision on the tower
         this.physics.world.collide(this.tower, this.enemyLeft, this.collisionOccurred, null, this);
         this.physics.world.collide(this.tower, this.enemyRight, this.collisionOccurred, null, this);
+
+        // animating health bar
+        greenBar.setScale(this.tower.health / this.tower.maxHealth, 1);
     }
 
     // parameters: x Position, y Position, speed, type of enemy, environment of enemy, enemy group
@@ -164,7 +190,13 @@ class Play extends Phaser.Scene {
         }
     }
 
-    collisionOccurred() {
-        this.scene.start('gameOverScene');
+    collisionOccurred(tower, enemy) {
+        enemy.enemyDeath();
+        tower.health -= 25;
+        console.log(tower.health);
+        if(tower.health <= 0) {
+            tower.towerDestroyed();
+            this.scene.start('gameOverScene');
+        }
     }
 }

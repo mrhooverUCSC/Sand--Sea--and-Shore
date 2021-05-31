@@ -5,6 +5,7 @@ let config = {
     width: 960,
     height: 640,
     scene: [ Menu, Play, GameOver ],
+    backgroundColor: '22c9e3',
     physics: {
         default: 'arcade',
         arcade:{
@@ -25,7 +26,14 @@ let borderPadding = borderUISize / 3;
 let oceanSpeed = 5;
 
 // controls
-let keyRIGHT, keyUP, keyDOWN, keyENTER, keySHIFT;
+let keyRIGHT, keyUP, keyDOWN, keyENTER, keySHIFT, keySPACE;
+
+// health bar for tower
+let redBar, greenBar;
+
+// drop loot management
+let value, dropLoot = 0;
+
 /*
 CMPM 120
 Iron Sites

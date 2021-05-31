@@ -16,13 +16,32 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.environment = environment;
         this.wave = -Math.PI;
         this.originalY = this.y;
+
+        // this.tint = 0xff0000;
+        // this.scene.time.addEvent({
+        //     delay: 3000,
+        //     callback: this.switchTints,
+        //     loop: true
+        // });
     }
+
+    // TODO: Trying to get the image sprite of the enemy to flash red to show it was damaged
+    // switchTints() {
+    //     console.log(`switch ${this.tintFill}`);
+    //     if(this.tintFill == false) {
+    //         this.tintFill = true;
+    //         console.log("show tint");
+    //     } else {
+    //         this.tintFill = false;
+    //         console.log("hide tint");
+    //     }
+    // }
 
     update() {
         // path #1: there is nothing added to code since it will go in a straight line
 
-        // path #2: goes in a sine wave graph
-        if(this.environment == 'Sky') {
+        // path #2: goes in a sine wave graph when it is a sky enemy
+        if(this.environment == "Sky") {
             this.wave += 0.05;
             this.y += Math.sin(this.wave) * 2;
         }
@@ -32,5 +51,12 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.scene.crabDeath.play();
         this.isDead = true;
         this.destroy();
+
+        value = Phaser.Math.Between(1, 100);
+        console.log('The value is ' + value);
+        if(value % 2 == 0) {
+            dropLoot++;
+        }
+        console.log('Droploot is now ' + dropLoot);
     }
 }
