@@ -58,11 +58,13 @@ class Play extends Phaser.Scene {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // Tower
-        this.tower = new Tower(this, game.config.width / 2, game.config.height - 100, 'tower').setOrigin(0.5, 0.5);
+        this.tower = new Tower(this, game.config.width / 2, game.config.height - 260, 'tower').setOrigin(0.5, 0.5);
+        this.tower.setScale(1.55);
+        this.tower.displayHeight = game.config.height*.75;
         
         // health bar for tower
-        redBar = this.add.image(this.tower.x - 140, this.tower.y - 225, 'redBAR').setOrigin(0, 0);
-        greenBar = this.add.image(this.tower.x - 140, this.tower.y - 225, 'greenBAR').setOrigin(0, 0);
+        redBar = this.add.image(this.tower.x - 145, this.tower.y + 120, 'redBAR').setOrigin(0, 0);
+        greenBar = this.add.image(this.tower.x - 145, this.tower.y + 120, 'greenBAR').setOrigin(0, 0);
 
         // different frames for tower
         this.anims.create({
