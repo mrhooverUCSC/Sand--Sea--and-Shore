@@ -109,7 +109,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.setTexture('porter');
         this.reloadSpeed = Infinity;
         this.turretSetup();
-        this.allies.getChildren().forEach(x => x.reloadSpeed = x.reloadSpeed * 0.5);
+        this.allies.getChildren().forEach(x => x.reloadSpeed = x.reloadSpeed - 75);
     }
 
     turretSetup(){
