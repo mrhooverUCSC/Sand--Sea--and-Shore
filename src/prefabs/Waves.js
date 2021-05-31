@@ -3,26 +3,28 @@ class Waves extends Phaser.Physics.Arcade.Sprite {
         super(scene);
         scene.add.existing(this);
         this.scene = scene;
+        this.numberOfEnemies = 0;
     }
 
-    spawn() {
-        let sideZones = [0, game.config.width];     // [leftZone, rightZone]
-        let enemyGroups = [this.scene.enemyLeft, this.scene.enemyRight]
-        for(let i = 0; i < 2; i++) {    // spawns 2 separate waves for the left and right side
-            let speedPosition = Math.pow(-1, i);    // to invert the signs in order to apply the correct velocity
-            let randomAmount = Phaser.Math.Between(5, 10);
-            // spawns the single hordes in intervals
-            for(let j = 0; j < randomAmount; j++) {
-                this.scene.time.delayedCall(2000, () => {
-                    let newTime = 1000 * Phaser.Math.Between(1, 3);
-                    let randomYEstimate = Phaser.Math.Between(-25, 25);
-                    this.scene.time.delayedCall(newTime, () => {
-                        this.scene.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 25 * speedPosition, 'crab', 'Shore', enemyGroups[i]);
-                        // signals the player that a wave is coming through 3 sfx playing at intervals
-                        this.scene.spawnSound.play();
-                    });
-                });
-            }
+    // parameters: (centerZoneX, centerZoneY, averageEnemies, speed, landType, enemyType)
+    spawn(zoneX, zoneY, number, speed, typeL, typeE) {
+        // keeps track of how many enemies are currently in the wave
+        this.numberOfEnemies += number;
+        let enemyGroup;
+        
+        if(zoneX > 0) {     // if the spawn zone is on the right side
+            enemyGroup = this.scene.enemyRight;
+            speed *= -1;
+        } else {    // if the spawn zone is on the left
+            enemyGroup = this.scene.enemyLeft;
+        }
+        for(let i = 0; i < number; i++) {
+            let varyPos = Phaser.Math.Between(-35, 35);
+            let varyTime = Phaser.Math.Between(500, 3000);
+            this.scene.time.delayedCall(varyTime, () => {
+                this.scene.addEnemy(zoneX, zoneY + varyPos, speed, typeE, typeL, enemyGroup);
+                this.scene.spawnSound.play();
+            });
         }
     }
 }

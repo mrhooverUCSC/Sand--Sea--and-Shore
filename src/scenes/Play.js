@@ -24,7 +24,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        this.oceanBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'oceanBackground').setOrigin(0, 0);
+        this.beachBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'beachBackground').setOrigin(0, 0);
         let textConfig = {
             fontFamily: 'callaghands',
             fontSize: '20px',
@@ -87,10 +87,22 @@ class Play extends Phaser.Scene {
 
         this.environmentTypes = ["Sea", "Sky", "Shore"];
         this.waves = new Waves(this);
+        this.zones = [0, game.config.height - 100,                  // bottom left
+                      game.config.width, game.config.height - 100,  // bottom right
+                      0, game.config.height / 2,                    // top left
+                      game.config.width, game.config.height / 2];   // top right
 
-        // // spawns a wave of enemies in the first 3 seconds
+        // spawns a wave of enemies in the first 3 seconds
         this.time.delayedCall(3000, () => {
-            this.waves.spawn();
+            // spawns each zone once for now
+            let speed = 25;
+            // sea enemies
+            this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10), speed, this.environmentTypes[0], 'crab');
+            this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10), speed, this.environmentTypes[0], 'crab');
+            // sky enemies
+            this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10), speed, this.environmentTypes[1], 'crab');
+            this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10), speed, this.environmentTypes[1], 'crab');
+            console.log(`Number of Enemies in Current Wave: ${this.waves.numberOfEnemies}`);
         });
     }
 
