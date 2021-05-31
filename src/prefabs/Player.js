@@ -21,9 +21,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         else {
             this.setAngularVelocity(0);
         }
-        if(keyRIGHT.isDown && this.ready == true){
+        if((keyRIGHT.isDown || keySHIFT.isDown) && this.ready == true){
             let newShot = new PlayerShot(this.scene, this.x + this.width/2 * Math.cos(this.rotation), this.y + this.height/2 * Math.sin(this.rotation), 'shot', this.rotation).setOrigin(0.5, 0.5);
             this.shots.add(newShot);
+            this.scene.throwingSfx.play();
             this.ready = false;
             this.scene.time.addEvent({
                 delay: 333,

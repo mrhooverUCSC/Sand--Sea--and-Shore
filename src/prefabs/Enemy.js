@@ -9,6 +9,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.body.onCollide = true;
         this.body.setImmovable(true);
         this.health = 100;
+        this.weakened = false; // whether the next hit will do double damage: the fry tower effect
+        this.expectedDamage = 0; // the amount of damage that will come from turret shots already aimed
         this.isDead = false;
 
         this.environment = environment;

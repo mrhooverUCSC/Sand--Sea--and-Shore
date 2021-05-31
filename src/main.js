@@ -9,7 +9,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade:{
-            debug: true,
+            debug: false,
             gravity: {
                 x: 0,
                 y: 0
@@ -26,7 +26,7 @@ let borderPadding = borderUISize / 3;
 let oceanSpeed = 5;
 
 // controls
-let keyRIGHT, keyUP, keyDOWN, keyENTER;
+let keyRIGHT, keyUP, keyDOWN, keyENTER, keySHIFT;
 /*
 CMPM 120
 Iron Sites

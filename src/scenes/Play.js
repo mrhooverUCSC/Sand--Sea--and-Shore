@@ -14,6 +14,10 @@ class Play extends Phaser.Scene {
         this.load.image('waiter', 'images/WaiterBall.png');
         this.load.image('waiterShot', 'images/WaiterShot.png');
         this.load.image('waiterOption', 'images/WaiterOption.png');
+        this.load.image('fryer', 'images/FryerBall.png');
+        this.load.image('fryerShot', 'images/FryerShot.png');
+        this.load.image('fryerOption', 'images/FryerOption.png');
+
         this.load.image('blank', 'images/Blank.png');
         this.load.image('crab', 'images/landCrab.png');
         this.load.image('tower', 'images/tower.png');
@@ -46,9 +50,12 @@ class Play extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         // Tower
         this.tower = new Tower(this, game.config.width / 2, game.config.height - 100, 'tower').setOrigin(0.5, 0.5);
+
+        //Enemy groups
         this.enemyLeft = this.add.group({
             runChildUpdate: true
         });
@@ -76,14 +83,15 @@ class Play extends Phaser.Scene {
             loop: false 
         });
 
-        //The player character's shots
+        //The player character and turret's shots
         this.shots = this.add.group({
             runChildUpdate: true
         });
 
         this.player = new Player(this, game.config.width / 2, game.config.height / 4, 'player', this.shots).setOrigin(0.5, 0.5);
-        this.turret = new Turret(this, 3 * game.config.width/5, 2*game.config.height/5, this.enemyRight, this.shots).setOrigin(0.5, 0.5);
-        this.turret2 = new Turret(this, 2 * game.config.width/5, 2*game.config.height/5, this.enemyLeft, this.shots).setOrigin(0.5, 0.5);
+        this.turret = new Turret(this, 3 * game.config.width/5, 2*game.config.height/5, this.enemyRight).setOrigin(0.5, 0.5);
+        this.turret2 = new Turret(this, 2 * game.config.width/5, 2*game.config.height/5, this.enemyLeft).setOrigin(0.5, 0.5);
+        this.turret3 = new Turret(this, 3 * game.config.width/5, 3*game.config.height/5, this.enemyRight).setOrigin(0.5, 0.5);
 
         this.environmentTypes = ["Sea", "Sky", "Shore"];
         this.waves = new Waves(this);
@@ -114,6 +122,7 @@ class Play extends Phaser.Scene {
         this.player.update();
         this.turret.update();
         this.turret2.update();
+        this.turret3.update();
         
         this.physics.world.overlap(this.enemyRight, this.shots, this.enemyHitByPlayer, null, this);
         this.physics.world.overlap(this.enemyLeft, this.shots, this.enemyHitByPlayer, null, this);
@@ -130,8 +139,10 @@ class Play extends Phaser.Scene {
 
     enemyHitByPlayer(enemy, shot){
         shot.destroy();
-        enemy.enemyDeath();
-        enemy.health -= 1; //deal damage
+        enemy.health -= 50; //deal damage
+        if(enemy.health <= 0){
+            enemy.enemyDeath();
+        }
     }
 
     collisionOccurred() {
