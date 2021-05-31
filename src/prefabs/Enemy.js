@@ -53,7 +53,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.destroy();
 
         value = Phaser.Math.Between(1, 100);
-        console.log('The value is' + value);
+        console.log('The value is ' + value);
         if(value % 2 == 0) {
             dropLoot++;
         }
