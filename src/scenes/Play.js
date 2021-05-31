@@ -19,8 +19,10 @@ class Play extends Phaser.Scene {
         this.load.image('fryerOption', 'images/FryerOption.png');
 
         this.load.image('blank', 'images/Blank.png');
-        this.load.image('crab', 'images/landCrab.png');
-        this.load.image('tower', 'images/tower.png');
+        this.load.image('crab', 'referenceMaterial/temp_crab.jpg');
+        this.load.atlas('tower', 'referenceMaterial/spritesheet (1).png', 'referenceMaterial/sprites (1).json');
+        this.load.image('redBAR', 'images/red_bar.png');
+        this.load.image('greenBAR', 'images/green_bar.png');
 
         this.load.audio('crabSpawn', ['audio/crab-claw-pincer.mp3']);
         this.load.audio('crabDeath', ['audio/crab-shell-remove.mp3']);
@@ -51,9 +53,30 @@ class Play extends Phaser.Scene {
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // Tower
         this.tower = new Tower(this, game.config.width / 2, game.config.height - 100, 'tower').setOrigin(0.5, 0.5);
+        
+        // health bar for tower
+        redBar = this.add.image(this.tower.x - 140, this.tower.y - 225, 'redBAR').setOrigin(0, 0);
+        greenBar = this.add.image(this.tower.x - 140, this.tower.y - 225, 'greenBAR').setOrigin(0, 0);
+        greenBar.setScale(this.tower.health / this.tower.maxHealth, 1);
+
+        // different frames for tower
+        this.anims.create({
+            key: 'levelUP',
+            frames: [
+                {frame: 'level_1'},
+                {frame: 'level_2'},
+                {frame: 'level_3'},
+                {frame: "level_4"}
+            ],
+            defaultTextureKey: 'tower',
+        
+            // time
+            duration: 2000,
+        });
 
         //Enemy groups
         this.enemyLeft = this.add.group({
@@ -119,6 +142,11 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
         }
 
+        // change through tower levels
+        if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
+            this.tower.anims.play('levelUP');
+        }
+
         this.player.update();
         this.turret.update();
         this.turret2.update();
@@ -145,7 +173,13 @@ class Play extends Phaser.Scene {
         }
     }
 
-    collisionOccurred() {
-        this.scene.start('gameOverScene');
+    collisionOccurred(tower, enemy) {
+        enemy.enemyDeath();
+        tower.health -= 25;
+        console.log(tower.health);
+        if(tower.health <= 0) {
+            tower.towerDestroyed();
+            this.scene.start('gameOverScene');
+        }
     }
 }
