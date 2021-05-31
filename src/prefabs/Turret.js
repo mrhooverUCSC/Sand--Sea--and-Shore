@@ -47,6 +47,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
                 if(this.ready == true){ //if ready to shoot, shoot
                     let shot = new TurretShot(this.scene, this.x + this.width/2 * Math.cos(this.rotation), this.y + this.height/2 * Math.sin(this.rotation), 'butcherShot', this.rotation, this.target, this.damage, this.shotSpeed).setOrigin(0.5, 0.5);
                     this.shots.add(shot);
+                    console.log(this.reloadSpeed);
                     this.scene.throwingSfx.play();
                     this.ready = false;
                     this.scene.time.addEvent({
@@ -85,6 +86,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.reloadSpeed = 1000;
         this.damage = 100;
 
+        this.allies.getChildren().forEach(x => {if(x.reloadSpeed == Infinity){this.reloadSpeed = this.reloadSpeed * 0.5}});
         this.turretSetup();
     }
 
