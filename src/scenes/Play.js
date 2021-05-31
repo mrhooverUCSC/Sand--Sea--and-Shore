@@ -28,7 +28,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        this.oceanBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'oceanBackground').setOrigin(0, 0);
+        this.beachBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'beachBackground').setOrigin(0, 0);
         let textConfig = {
             fontFamily: 'callaghands',
             fontSize: '20px',
@@ -94,27 +94,23 @@ class Play extends Phaser.Scene {
         this.turret3 = new Turret(this, 3 * game.config.width/5, 3*game.config.height/5, this.enemyRight).setOrigin(0.5, 0.5);
 
         this.environmentTypes = ["Sea", "Sky", "Shore"];
+        this.waves = new Waves(this);
+        this.zones = [0, game.config.height - 100,                  // bottom left
+                      game.config.width, game.config.height - 100,  // bottom right
+                      0, game.config.height / 2,                    // top left
+                      game.config.width, game.config.height / 2];   // top right
 
         // spawns a wave of enemies in the first 3 seconds
         this.time.delayedCall(3000, () => {
-            let sideZones = [0, game.config.width];     // [leftZone, rightZone]
-            let enemyGroups = [this.enemyLeft, this.enemyRight]
-            for(let i = 0; i < 2; i++) {    // spawns 2 separate waves for the left and right side
-                let speedPosition = Math.pow(-1, i);    // to invert the signs in order to apply the correct velocity
-                let randomAmount = Phaser.Math.Between(5, 10);
-                // spawns the single hordes in intervals
-                for(let j = 0; j < randomAmount; j++) {
-                    this.time.delayedCall(2000, () => {
-                        let newTime = 1000 * Phaser.Math.Between(1, 3);
-                        let randomYEstimate = Phaser.Math.Between(-25, 25);
-                        this.time.delayedCall(newTime, () => {
-                            this.addEnemy(sideZones[i], game.config.height - 100 + randomYEstimate, 25 * speedPosition, 'crab', 'Shore', enemyGroups[i]);
-                            // signals the player that a wave is coming through 3 sfx playing at intervals
-                            this.spawnSound.play();
-                        });
-                    });
-                }
-            }
+            // spawns each zone once for now
+            let speed = 25;
+            // sea enemies
+            this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10), speed, this.environmentTypes[0], 'crab');
+            this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10), speed, this.environmentTypes[0], 'crab');
+            // sky enemies
+            this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10), speed, this.environmentTypes[1], 'crab');
+            this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10), speed, this.environmentTypes[1], 'crab');
+            console.log(`Number of Enemies in Current Wave: ${this.waves.numberOfEnemies}`);
         });
     }
 

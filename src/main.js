@@ -5,6 +5,7 @@ let config = {
     width: 960,
     height: 640,
     scene: [ Menu, Play, GameOver ],
+    backgroundColor: '22c9e3',
     physics: {
         default: 'arcade',
         arcade:{
