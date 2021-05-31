@@ -14,5 +14,4 @@ class Tower extends Phaser.Physics.Arcade.Sprite {
         this.isDestroyed = true;
         this.destroy();
     }
-
 }
