@@ -11,7 +11,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade:{
-            debug: false,
+            debug: true,
             gravity: {
                 x: 0,
                 y: 0
@@ -28,7 +28,14 @@ let borderPadding = borderUISize / 3;
 let oceanSpeed = 5;
 
 // controls
-let keyRIGHT, keyUP, keyDOWN, keyENTER, keySHIFT;
+let keyRIGHT, keyUP, keyDOWN, keyENTER, keySHIFT, keySPACE, keyBACKSPACE;
+
+// health bar for tower
+let redBar, greenBar;
+
+// drop loot management
+let value, dropLoot = 0;
+
 /*
 CMPM 120
 Iron Sites

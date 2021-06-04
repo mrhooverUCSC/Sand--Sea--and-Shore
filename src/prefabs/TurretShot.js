@@ -5,7 +5,7 @@ class TurretShot extends Phaser.Physics.Arcade.Sprite {
         this.target = target;
         this.s = scene;
         this.target.expectedDamage += damage;
-        console.log(target, target.expectedDamage, target.health);
+        //console.log(target, target.expectedDamage, target.health);
         this.damage = damage;
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -39,16 +39,16 @@ class TurretShot extends Phaser.Physics.Arcade.Sprite {
         enemy.expectedDamage -= this.damage;
         if(this.damage == 0 && !enemy.weakened){
             enemy.weakened = true;
-            enemy.expectedDamage += 25;
+            enemy.expectedDamage += 10;
         }
-        else if(enemy.weakened){
-            enemy.health -= 2 * this.damage;
+        else if(this.damage != 0 && enemy.weakened){
+            enemy.health -= 10 + this.damage;
         }
         else{
             enemy.health -= this.damage; //deal damage
         }
         if(enemy.health <= 0){
-            enemy.enemyDeath();
+            enemy.enemyDeath(true);
         }
     }
 }
