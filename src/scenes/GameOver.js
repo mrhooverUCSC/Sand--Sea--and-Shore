@@ -4,16 +4,15 @@ class GameOver extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('oceanBackground',  './assets/images/oceanBackground.png');
+        this.load.image('menuBackground',  './assets/images/menuBackground.png');
     }
 
     create() {
-        this.oceanBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'oceanBackground').setOrigin(0, 0);
+        this.add.tileSprite(0, 0, game.config.width, game.config.height, 'menuBackground').setOrigin(0, 0);
 
         let gameOverConfig = {
-            fontFamily: 'callaghands',
+            fontFamily: 'forturn',
             fontSize: '40px',
-            backgroundColor: '#F3B141',
             color: '#000000',
             align: 'center',
             padding: {
