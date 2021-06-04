@@ -12,6 +12,7 @@ class Play extends Phaser.Scene {
         this.load.image('player', 'images/PlayerBall.png');
         // turret assets
         this.load.image('shot', 'images/PlayerShot.png');
+        //temp assets for turrets
         this.load.image('butcher', 'images/ButcherBall.png');
         this.load.image('butcherShot', 'images/ButcherShot.png');
         this.load.image('butcherOption', 'images/ButcherOption.png');
@@ -23,6 +24,16 @@ class Play extends Phaser.Scene {
         this.load.image('fryerOption', 'images/FryerOption.png');
         this.load.image('porter', 'images/PorterBall.png');
         this.load.image('porterOption', 'images/PorterOption.png');
+        //testing multi-asset turrets
+        this.load.image('fryerBase', 'images/FryerBase.png');
+        this.load.image('fryerAimer', 'images/FryerAimer.png');
+        this.load.image('fryerProjectile', 'images/FryerProjectile.png');
+        this.load.image('waiterBase', 'images/WaiterBase.png');
+        this.load.image('waiterAimer', 'images/WaiterAimer.png');
+        this.load.image('waiterProjectile', 'images/WaiterProjectile.png');
+        this.load.image('butcherBase', 'images/ButcherBase.png');
+        this.load.image('butcherProjectile', 'images/ButcherProjectile.png');
+
         this.load.image('blank', 'images/Blank.png');
         this.load.atlas('tower', 'referenceMaterial/spritesheet (1).png', 'referenceMaterial/sprites (1).json');
         this.load.image('redBAR', 'images/red_bar.png');

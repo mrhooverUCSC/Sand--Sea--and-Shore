@@ -25,7 +25,8 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
 
         this.ready = false; //reload ready
         this.type == 'blank'; //stores type of the turret
-        this.reloadSpeed = 500;
+        this.bullet == 'butcherShot';
+        this.reloadSpeed = Infinity;
         this.shotSpeed = 400;
         this.damage = 25;
     }
@@ -45,7 +46,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
             if(this.target != null){
                 this.setRotation(Phaser.Math.Angle.Between(this.x, this.y, this.target.x, this.target.y)); //aim at it; this.enemies.getChildren()[0].x
                 if(this.ready == true){ //if ready to shoot, shoot
-                    let shot = new TurretShot(this.scene, this.x + this.width/2 * Math.cos(this.rotation), this.y + this.height/2 * Math.sin(this.rotation), 'butcherShot', this.rotation, this.target, this.damage, this.shotSpeed).setOrigin(0.5, 0.5);
+                    let shot = new TurretShot(this.scene, this.x + this.width/2 * Math.cos(this.rotation), this.y + this.height/2 * Math.sin(this.rotation), this.bullet, this.rotation, this.target, this.damage, this.shotSpeed).setOrigin(0.5, 0.5);
                     this.shots.add(shot);
                     //console.log(this.reloadSpeed);
                     this.scene.throwingSfx.play();
@@ -82,7 +83,9 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
     }
 
     setButcher(){
-        this.setTexture('butcher');
+        this.setTexture('butcherProjectile');
+        this.bullet = 'butcherProjectile';
+        this.scene.add.sprite(this.x, this.y, 'butcherBase').setOrigin(0.5, 0.5);
         this.reloadSpeed = 1000;
         this.damage = 100;
 
@@ -91,14 +94,18 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
     }
 
     setWaiter(){
-        this.setTexture('waiter');
+        this.setTexture('waiterAimer');
+        this.bullet = 'waiterProjectile';
+        this.scene.add.sprite(this.x, this.y, 'waiterBase').setOrigin(0.5, 0.5);
         this.reloadSpeed = 250;
         this.damage = 25;
         this.turretSetup();
     }
 
     setFryer(){
-        this.setTexture('fryer');
+        this.setTexture('fryerAimer'); //aiming png
+        this.bullet = 'fryerProjectile'; //shot png
+        this.scene.add.sprite(this.x, this.y, 'fryerBase').setOrigin(0.5, 0.5); //base png
         this.reloadSpeed = 25;
         this.shotSpeed = 1000;
         this.damage = 0;
