@@ -24,7 +24,7 @@ class TurretShot extends Phaser.Physics.Arcade.Sprite {
         else{
             //move towards the target
             this.setRotation(Phaser.Math.Angle.Between(this.x, this.y, this.target.x, this.target.y)); //aim at it
-            this.setVelocity(Math.cos(this.rotation) * this.speedMultiplier, Math.sin(this.rotation) * this.speedMultiplier);    
+            this.setVelocity(Math.cos(this.rotation) * this.speedMultiplier, Math.sin(this.rotation) * this.speedMultiplier);
         }
 
         if(this.x < 0 || this.x > game.config.width || this.y < 0 || this.y > game.config.height){  //delete when off screen

@@ -20,6 +20,8 @@ class Play extends Phaser.Scene {
         this.load.image('fryerOption', 'images/FryerOption.png');
         this.load.image('porter', 'images/PorterBall.png');
         this.load.image('porterOption', 'images/PorterOption.png');
+        this.load.image('blank', 'images/Blank.png');
+
         //testing multi-asset turrets
         this.load.image('fryerBase', 'images/FryerBase.png');
         this.load.image('fryerAimer', 'images/FryerAimer.png');
@@ -32,7 +34,8 @@ class Play extends Phaser.Scene {
         this.load.image('butcherBase', 'images/ButcherBase.png');
         this.load.image('butcherProjectile', 'images/ButcherProjectile.png');
 
-        this.load.image('blank', 'images/Blank.png');
+        this.load.image('porterBase', 'images/PorterBase.png');
+
         this.load.image('crab', 'referenceMaterial/temp_crab.jpg');
         this.load.atlas('tower', 'referenceMaterial/spritesheet (1).png', 'referenceMaterial/sprites (1).json');
         this.load.image('redBAR', 'images/red_bar.png');
@@ -41,6 +44,7 @@ class Play extends Phaser.Scene {
         this.load.audio('crabSpawn', ['audio/crab-claw-pincer.mp3']);
         this.load.audio('crabDeath', ['audio/crab-shell-remove.mp3']);
         this.load.audio('throwing', ['audio/throwing.mp3']);
+        this.load.audio('bgm', ['audio/bgm.mp3']);
     }
 
     create() {
@@ -120,6 +124,13 @@ class Play extends Phaser.Scene {
             rate: 1,
             loop: false 
         });
+        this.bgm = this.sound.add('bgm', {
+            mute: false,
+            volume: 1,
+            rate: 1,
+            loop: true
+        })
+        this.bgm.play();
 
         //The player character and turret's shots
         this.shots = this.add.group({
@@ -167,7 +178,9 @@ class Play extends Phaser.Scene {
 
     update() {
         if(Phaser.Input.Keyboard.JustDown(keyENTER)) {   // enter menu scene
+            this.bgm.stop();
             this.scene.start("menuScene");
+
         }
 
         // change through tower levels
@@ -176,9 +189,6 @@ class Play extends Phaser.Scene {
         }
 
         this.player.update();
-        //this.turret.update();
-        //this.turret2.update();
-        //this.turret3.update();
         
         this.physics.world.overlap(this.enemyRight, this.shots, this.enemyHitByPlayer, null, this);
         this.physics.world.overlap(this.enemyLeft, this.shots, this.enemyHitByPlayer, null, this);

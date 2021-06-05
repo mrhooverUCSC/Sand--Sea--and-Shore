@@ -6,6 +6,7 @@ let config = {
     height: 640,
     scene: [ Menu, Play, GameOver ],
     backgroundColor: '22c9e3',
+    autoCenter: Phaser.Scale.HORIZONTALLY,
     physics: {
         default: 'arcade',
         arcade:{
