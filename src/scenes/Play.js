@@ -38,14 +38,13 @@ class Play extends Phaser.Scene {
 
         this.load.image('porterBase', 'images/PorterBase.png');
 
-        this.load.image('crab', 'referenceMaterial/temp_crab.jpg');
         this.load.image('blank', 'images/Blank.png');
         // tower assets
-        this.load.atlas('tower', 'referenceMaterial/spritesheet (1).png', 'referenceMaterial/sprites (1).json');
+        this.load.image('tower', 'images/temp_castle1.png');
         this.load.image('redBAR', 'images/red_bar.png');
         this.load.image('greenBAR', 'images/green_bar.png');
         // enemy assets
-        this.load.image('crab', 'images/enemy_crab.jpg');
+        this.load.image('crab', 'images/temp_crab.png');
         this.load.image('lobster', 'images/enemy_lobster.png');
         this.load.image('gannet', 'images/enemy_gannet.png');
         this.load.image('seagull', 'images/enemy_seagull.png');
@@ -84,7 +83,6 @@ class Play extends Phaser.Scene {
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         keyBACKSPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.BACKSPACE);
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
-        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // Tower
         this.tower = new Tower(this, game.config.width / 2, game.config.height - 260, 'tower').setOrigin(0.5, 0.5);
@@ -94,21 +92,6 @@ class Play extends Phaser.Scene {
         // health bar for tower
         redBar = this.add.image(this.tower.x - 145, this.tower.y + 120, 'redBAR').setOrigin(0, 0);
         greenBar = this.add.image(this.tower.x - 145, this.tower.y + 120, 'greenBAR').setOrigin(0, 0);
-
-        // different frames for tower
-        this.anims.create({
-            key: 'levelUP',
-            frames: [
-                {frame: 'level_1'},
-                {frame: 'level_2'},
-                {frame: 'level_3'},
-                {frame: "level_4"}
-            ],
-            defaultTextureKey: 'tower',
-        
-            // time
-            duration: 2000,
-        });
 
         //Enemy groups
         this.enemyLeft = this.add.group({
@@ -199,11 +182,6 @@ class Play extends Phaser.Scene {
                 this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + this.round, speed, this.environmentTypes[1], 'seagull');
                 console.log(`Number of Enemies in Current Wave: ${this.waves.numberOfEnemies}`);
             });
-        }
-
-        // change through tower levels
-        if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
-            this.tower.anims.play('levelUP');
         }
 
         this.player.update();
