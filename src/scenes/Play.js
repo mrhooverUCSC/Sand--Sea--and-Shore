@@ -64,6 +64,7 @@ class Play extends Phaser.Scene {
         this.load.audio('bgm', ['audio/bgm.mp3']);
 
         //currency
+        // We got the bucket idea from: https://www.123rf.com/photo_93022318_stock-vector-bucket-illustration-a-vector-cartoon-illustration-of-an-empty-bucket-.html
         this.load.image('currency', 'images/currency.png');
     }
 
