@@ -4,6 +4,7 @@ class Waves extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         this.scene = scene;
         this.numberOfEnemies = 0;
+        this.ongoingWave = false;   // keeps track if there is a wave currently
     }
 
     // parameters: (centerZoneX, centerZoneY, averageEnemies, speed, landType, enemyType)
@@ -11,7 +12,6 @@ class Waves extends Phaser.Physics.Arcade.Sprite {
         // keeps track of how many enemies are currently in the wave
         this.numberOfEnemies += number;
         let enemyGroup;
-        
         if(zoneX > 0) {     // if the spawn zone is on the right side
             enemyGroup = this.scene.enemyRight;
             speed *= -1;

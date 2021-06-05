@@ -6,7 +6,11 @@ class Play extends Phaser.Scene {
     preload() {
         this.load.path = './assets/';
 
+        // background
+        this.load.image('beachBackground', 'images/beachBackground.png');
+        // player
         this.load.image('player', 'images/PlayerBall.png');
+        // turret assets
         this.load.image('shot', 'images/PlayerShot.png');
         //temp assets for turrets
         this.load.image('butcher', 'images/ButcherBall.png');
@@ -26,21 +30,29 @@ class Play extends Phaser.Scene {
         this.load.image('fryerBase', 'images/FryerBase.png');
         this.load.image('fryerAimer', 'images/FryerAimer.png');
         this.load.image('fryerProjectile', 'images/FryerProjectile.png');
-
         this.load.image('waiterBase', 'images/WaiterBase.png');
         this.load.image('waiterAimer', 'images/WaiterAimer.png');
         this.load.image('waiterProjectile', 'images/WaiterProjectile.png');
-
         this.load.image('butcherBase', 'images/ButcherBase.png');
         this.load.image('butcherProjectile', 'images/ButcherProjectile.png');
 
         this.load.image('porterBase', 'images/PorterBase.png');
 
         this.load.image('crab', 'referenceMaterial/temp_crab.jpg');
+        this.load.image('blank', 'images/Blank.png');
+        // tower assets
         this.load.atlas('tower', 'referenceMaterial/spritesheet (1).png', 'referenceMaterial/sprites (1).json');
         this.load.image('redBAR', 'images/red_bar.png');
         this.load.image('greenBAR', 'images/green_bar.png');
+        // enemy assets
+        this.load.image('crab', 'images/enemy_crab.jpg');
+        this.load.image('lobster', 'images/enemy_lobster.png');
+        this.load.image('gannet', 'images/enemy_gannet.png');
+        this.load.image('seagull', 'images/enemy_seagull.png');
+        this.load.image('stingray', 'images/enemy_stingray.png');
+        this.load.image('urchin', 'images/enemy_urchin.png');
 
+        // audio
         this.load.audio('crabSpawn', ['audio/crab-claw-pincer.mp3']);
         this.load.audio('crabDeath', ['audio/crab-shell-remove.mp3']);
         this.load.audio('throwing', ['audio/throwing.mp3']);
@@ -48,11 +60,10 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        this.beachBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'beachBackground').setOrigin(0, 0);
+        this.add.tileSprite(0, 0, game.config.width, game.config.height, 'beachBackground').setOrigin(0, 0);
         let textConfig = {
-            fontFamily: 'callaghands',
+            fontFamily: 'oswald',
             fontSize: '20px',
-            backgroundColor: '#F3B141',
             color: '#000000',
             align: 'center',
             padding: {
@@ -64,12 +75,14 @@ class Play extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        this.add.text(150, 15,'Press ENTER to return to Main Menu', textConfig).setOrigin(0.5);
+        this.add.text(175, 15,'Press Backspace to return to Main Menu', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width / 2, 30,'Press ENTER to start round', textConfig).setOrigin(0.5);
 
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        keyBACKSPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.BACKSPACE);
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
@@ -157,30 +170,35 @@ class Play extends Phaser.Scene {
 
         this.environmentTypes = ["Sea", "Sky", "Shore"];
         this.waves = new Waves(this);
+        this.round = 1;
         this.zones = [0, game.config.height - 100,                  // bottom left
                       game.config.width, game.config.height - 100,  // bottom right
                       0, game.config.height / 2,                    // top left
                       game.config.width, game.config.height / 2];   // top right
-
-        // spawns a wave of enemies in the first 3 seconds
-        this.time.delayedCall(3000, () => {
-            // spawns each zone once for now
-            let speed = 25;
-            // sea enemies
-            this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10), speed, this.environmentTypes[0], 'crab');
-            this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10), speed, this.environmentTypes[0], 'crab');
-            // sky enemies
-            this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10), speed, this.environmentTypes[1], 'crab');
-            this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10), speed, this.environmentTypes[1], 'crab');
-            console.log(`Number of Enemies in Current Wave: ${this.waves.numberOfEnemies}`);
-        });
     }
 
     update() {
-        if(Phaser.Input.Keyboard.JustDown(keyENTER)) {   // enter menu scene
-            this.bgm.stop();
+        // enter menu scene (temporary)
+        if(Phaser.Input.Keyboard.JustDown(keyBACKSPACE)) {
             this.scene.start("menuScene");
+            this.bgm.stop();
+        }
 
+        // start round
+        if(Phaser.Input.Keyboard.JustDown(keyENTER) && !this.waves.ongoingWave) {
+            console.log(`Round ${this.round}`);
+            this.waves.ongoingWave = true;
+            this.time.delayedCall(1000, () => {
+                // spawns each zone once for now
+                let speed = 15;
+                // sea enemies
+                this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + this.round, speed, this.environmentTypes[0], 'crab');
+                this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + this.round, speed, this.environmentTypes[0], 'urchin');
+                // sky enemies
+                this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + this.round, speed, this.environmentTypes[1], 'seagull');
+                this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + this.round, speed, this.environmentTypes[1], 'seagull');
+                console.log(`Number of Enemies in Current Wave: ${this.waves.numberOfEnemies}`);
+            });
         }
 
         // change through tower levels
@@ -203,6 +221,9 @@ class Play extends Phaser.Scene {
     // parameters: x Position, y Position, speed, type of enemy, environment of enemy, enemy group
     addEnemy(xZone, yZone, speed, type, environment, eg) {
         let newEnemy = new Enemy(this, xZone, yZone, type, environment, speed);
+        if(xZone == 0) {    // fixes the sprite to be facing the correct way
+            newEnemy.flipX = true;
+        }
         eg.add(newEnemy);
     }
 

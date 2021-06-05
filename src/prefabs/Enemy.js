@@ -16,26 +16,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.environment = environment;
         this.wave = -Math.PI;
         this.originalY = this.y;
-
-        // this.tint = 0xff0000;
-        // this.scene.time.addEvent({
-        //     delay: 3000,
-        //     callback: this.switchTints,
-        //     loop: true
-        // });
     }
-
-    // TODO: Trying to get the image sprite of the enemy to flash red to show it was damaged
-    // switchTints() {
-    //     console.log(`switch ${this.tintFill}`);
-    //     if(this.tintFill == false) {
-    //         this.tintFill = true;
-    //         console.log("show tint");
-    //     } else {
-    //         this.tintFill = false;
-    //         console.log("hide tint");
-    //     }
-    // }
 
     update() {
         // path #1: there is nothing added to code since it will go in a straight line
@@ -43,20 +24,32 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         // path #2: goes in a sine wave graph when it is a sky enemy
         if(this.environment == "Sky") {
             this.wave += 0.05;
-            this.y += Math.sin(this.wave) * 2;
+            this.y += Math.sin(this.wave) * 3;
         }
     }
 
-    enemyDeath() {
+    enemyDeath(causeOfDeath) {
+        // decreases the amount of enemies that are currently in play
+        this.scene.waves.numberOfEnemies--;
+        // if the wave is over
+        if(this.scene.waves.numberOfEnemies == 0) {
+            this.scene.waves.ongoingWave = false;
+            this.scene.round++;
+        }
+        console.log(`Current Enemies: ${this.scene.waves.numberOfEnemies}`);
+
         this.scene.crabDeath.play();
         this.isDead = true;
         this.destroy();
 
-        value = Phaser.Math.Between(1, 100);
-        console.log('The value is ' + value);
-        if(value % 2 == 0) {
-            dropLoot++;
+        // if they were shot by the player or turrents
+        if(causeOfDeath) {
+            value = Phaser.Math.Between(1, 100);
+            //console.log('The value is ' + value);
+            if(value % 2 == 0) {
+                dropLoot++;
+            }
+            //console.log('Droploot is now ' + dropLoot);
         }
-        console.log('Droploot is now ' + dropLoot);
     }
 }

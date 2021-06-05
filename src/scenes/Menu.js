@@ -4,21 +4,15 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('beachBackground',  './assets/images/beachBackground.png');
+        this.load.image('menuBackground',  './assets/images/menuBackground.png');
 
-        // Received free font from:
-        // https://www.1001freefonts.com/callaghands.font
-        this.loadFont('callaghands', './assets/font/Callaghands.ttf');
-        this.loadFont('lostFish', './assets/font/LostFish.ttf');
-        this.loadFont('ipaSec', './assets/font/IpanemaSecco.ttf');
-        this.loadFont('seaWaveBasic', './assets/font/SeawaveBasic.ttf');
         this.loadFont('forturn', './assets/font/Forturn.ttf');          // title font
         this.loadFont('oswald', './assets/font/Oswald-Regular.ttf');
     }
 
     create() {
         // background
-        //this.beachBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'beachBackground').setOrigin(0, 0);
+        this.add.tileSprite(0, 0, game.config.width, game.config.height, 'menuBackground').setOrigin(0, 0);
 
         // menu text configuration  
         let menuConfig = {
@@ -36,9 +30,9 @@ class Menu extends Phaser.Scene {
         }
         
         // show menu text
-        this.add.text(game.config.width/2, game.config.height/3 - borderUISize, 'Sea, Sand and Shore', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, 100, 'Sea, Sand and Shore', menuConfig).setOrigin(0.5);
         menuConfig.fontSize = '30px';
-        this.add.text(game.config.width/2, game.config.height/3 + borderPadding * 2,'A Tower Defense Game', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, 175,'A Tower Defense Game', menuConfig).setOrigin(0.5);
         menuConfig.fontSize = '24px';
         menuConfig.fontFamily = 'oswald';
         this.add.text(game.config.width/2, game.config.height/3 + 2* borderUISize, `Click on the black circles, then the popup button, to get a tower of that button's color.`, menuConfig).setOrigin(0.5);
