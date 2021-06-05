@@ -44,11 +44,17 @@ class Play extends Phaser.Scene {
         this.load.image('redBAR', 'images/red_bar.png');
         this.load.image('greenBAR', 'images/green_bar.png');
         // enemy assets
+        // We got the crab idea from: https://www.dreamstime.com/stock-illustration-cute-cartoon-smiling-crab-vector-hand-drawn-illustration-happy-character-lifting-up-claws-isolated-white-background-image78279193
         this.load.image('crab', 'images/temp_crab.png');
+        // We got the lobster idea from: https://illustoon.com/?id=1675
         this.load.image('lobster', 'images/enemy_lobster.png');
+        // We got the gannet idea from: https://www.birdorable.com/gifts/designs/flying-northern-gannet/z/145934725291845208/
         this.load.image('gannet', 'images/enemy_gannet.png');
+        // We got the seagull idea from: https://www.istockphoto.com/illustrations/seagull
         this.load.image('seagull', 'images/enemy_seagull.png');
+        // We got the stingray idea from: https://www.vectorstock.com/royalty-free-vectors/stingray-clipart-vectors
         this.load.image('stingray', 'images/enemy_stingray.png');
+        // We got the urchin idea from: https://www.shutterstock.com/search/urchin+cartoon
         this.load.image('urchin', 'images/enemy_urchin.png');
 
         // audio
@@ -74,8 +80,22 @@ class Play extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        this.add.text(175, 15,'Press Backspace to return to Main Menu', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width / 2, 30,'Press ENTER to start round', textConfig).setOrigin(0.5);
+        this.add.rectangle(0, borderPadding * 2.15, game.config.width, borderUISize, 0xFFA500).setOrigin(0, 0);
+
+        this.add.text(165, 15,'Press Backspace to return to Main Menu', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width / 2, 50,'Press ENTER to start round', textConfig).setOrigin(0.5);
+
+
+        // health bar for tower
+        redBar = this.add.image(0, -50, 'redBAR').setOrigin(0, 0);
+        greenBar = this.add.image(0, -50, 'greenBAR').setOrigin(0, 0);
+        let healthLabel = this.add.text(30, 50, 'HP', textConfig).setOrigin(0.5, 0.5);
+
+        // round text
+        this.add.text(game.config.width - borderUISize * 1.5, 50, `Round` , textConfig).setOrigin(0.5, 0.5);
+
+        // droploot/currency text
+        this.add.text(game.config.width - borderUISize * 3, 50, `${dropLoot}`, textConfig).setOrigin(0.5, 0.5);
 
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
@@ -87,11 +107,7 @@ class Play extends Phaser.Scene {
         // Tower
         this.tower = new Tower(this, game.config.width / 2, game.config.height - 260, 'tower').setOrigin(0.5, 0.5);
         this.tower.setScale(1.55);
-        this.tower.displayHeight = game.config.height*.75;
-        
-        // health bar for tower
-        redBar = this.add.image(this.tower.x - 145, this.tower.y + 120, 'redBAR').setOrigin(0, 0);
-        greenBar = this.add.image(this.tower.x - 145, this.tower.y + 120, 'greenBAR').setOrigin(0, 0);
+        this.tower.displayHeight = game.config.height * .75;
 
         //Enemy groups
         this.enemyLeft = this.add.group({
@@ -153,11 +169,13 @@ class Play extends Phaser.Scene {
 
         this.environmentTypes = ["Sea", "Sky", "Shore"];
         this.waves = new Waves(this);
-        this.round = 1;
+        this.round = 0;
         this.zones = [0, game.config.height - 100,                  // bottom left
                       game.config.width, game.config.height - 100,  // bottom right
                       0, game.config.height / 2,                    // top left
                       game.config.width, game.config.height / 2];   // top right
+
+        let roundText = this.add.text(game.config.width - 28, 50, `${this.round}`, {fontFamily: 'oswald', fontSize: '20px', color: '#000000'}).setOrigin(0.5, 0.5);
     }
 
     update() {
@@ -169,7 +187,9 @@ class Play extends Phaser.Scene {
 
         // start round
         if(Phaser.Input.Keyboard.JustDown(keyENTER) && !this.waves.ongoingWave) {
+            this.round++;
             console.log(`Round ${this.round}`);
+            this.roundText = `${this.round}`;
             this.waves.ongoingWave = true;
             this.time.delayedCall(1000, () => {
                 // spawns each zone once for now
