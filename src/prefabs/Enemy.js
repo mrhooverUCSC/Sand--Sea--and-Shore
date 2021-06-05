@@ -24,7 +24,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         // path #2: goes in a sine wave graph when it is a sky enemy
         if(this.environment == "Sky") {
             this.wave += 0.05;
-            this.y += Math.sin(this.wave) * 2;
+            this.y += Math.sin(this.wave) * 3;
         }
     }
 

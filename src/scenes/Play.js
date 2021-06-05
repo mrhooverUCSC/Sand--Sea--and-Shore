@@ -33,13 +33,18 @@ class Play extends Phaser.Scene {
         this.load.image('waiterProjectile', 'images/WaiterProjectile.png');
         this.load.image('butcherBase', 'images/ButcherBase.png');
         this.load.image('butcherProjectile', 'images/ButcherProjectile.png');
-
         this.load.image('blank', 'images/Blank.png');
+        // tower assets
         this.load.atlas('tower', 'referenceMaterial/spritesheet (1).png', 'referenceMaterial/sprites (1).json');
         this.load.image('redBAR', 'images/red_bar.png');
         this.load.image('greenBAR', 'images/green_bar.png');
         // enemy assets
-        this.load.image('crab', 'referenceMaterial/temp_crab.jpg');
+        this.load.image('crab', 'images/enemy_crab.jpg');
+        this.load.image('lobster', 'images/enemy_lobster.png');
+        this.load.image('gannet', 'images/enemy_gannet.png');
+        this.load.image('seagull', 'images/enemy_seagull.png');
+        this.load.image('stingray', 'images/enemy_stingray.png');
+        this.load.image('urchin', 'images/enemy_urchin.png');
 
         // audio
         this.load.audio('crabSpawn', ['audio/crab-claw-pincer.mp3']);
@@ -170,13 +175,13 @@ class Play extends Phaser.Scene {
             this.waves.ongoingWave = true;
             this.time.delayedCall(1000, () => {
                 // spawns each zone once for now
-                let speed = 25;
+                let speed = 15;
                 // sea enemies
-                this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10), speed, this.environmentTypes[0], 'crab');
-                this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10), speed, this.environmentTypes[0], 'crab');
+                this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + this.round, speed, this.environmentTypes[0], 'crab');
+                this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + this.round, speed, this.environmentTypes[0], 'urchin');
                 // sky enemies
-                this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10), speed, this.environmentTypes[1], 'crab');
-                this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10), speed, this.environmentTypes[1], 'crab');
+                this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + this.round, speed, this.environmentTypes[1], 'seagull');
+                this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + this.round, speed, this.environmentTypes[1], 'seagull');
                 console.log(`Number of Enemies in Current Wave: ${this.waves.numberOfEnemies}`);
             });
         }
@@ -187,9 +192,6 @@ class Play extends Phaser.Scene {
         }
 
         this.player.update();
-        //this.turret.update();
-        //this.turret2.update();
-        //this.turret3.update();
         
         this.physics.world.overlap(this.enemyRight, this.shots, this.enemyHitByPlayer, null, this);
         this.physics.world.overlap(this.enemyLeft, this.shots, this.enemyHitByPlayer, null, this);
@@ -199,14 +201,14 @@ class Play extends Phaser.Scene {
 
         // animating health bar
         greenBar.setScale(this.tower.health / this.tower.maxHealth, 1);
-        // console.log(`Green x${greenBar.x}, y${greenBar.y}`);
-        // console.log(`Red x${redBar.x}, y${redBar.y}`);
-        // greenBar.setPosition(redBar.x, greenBar.y);
     }
 
     // parameters: x Position, y Position, speed, type of enemy, environment of enemy, enemy group
     addEnemy(xZone, yZone, speed, type, environment, eg) {
         let newEnemy = new Enemy(this, xZone, yZone, type, environment, speed);
+        if(xZone == 0) {    // fixes the sprite to be facing the correct way
+            newEnemy.flipX = true;
+        }
         eg.add(newEnemy);
     }
 

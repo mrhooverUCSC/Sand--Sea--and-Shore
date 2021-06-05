@@ -47,6 +47,9 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
                 this.setRotation(Phaser.Math.Angle.Between(this.x, this.y, this.target.x, this.target.y)); //aim at it; this.enemies.getChildren()[0].x
                 if(this.ready == true){ //if ready to shoot, shoot
                     let shot = new TurretShot(this.scene, this.x + this.width/2 * Math.cos(this.rotation), this.y + this.height/2 * Math.sin(this.rotation), this.bullet, this.rotation, this.target, this.damage, this.shotSpeed).setOrigin(0.5, 0.5);
+                    if(this.x > game.config.width / 2) {  // fixes how the sprite is to be correct as to not be upside down
+                        shot.flipY = true;
+                    }
                     this.shots.add(shot);
                     //console.log(this.reloadSpeed);
                     this.scene.throwingSfx.play();
