@@ -62,6 +62,9 @@ class Play extends Phaser.Scene {
         this.load.audio('crabDeath', ['audio/crab-shell-remove.mp3']);
         this.load.audio('throwing', ['audio/throwing.mp3']);
         this.load.audio('bgm', ['audio/bgm.mp3']);
+
+        //currency
+        this.load.image('currency', 'images/currency.png');
     }
 
     create() {
@@ -95,6 +98,7 @@ class Play extends Phaser.Scene {
         this.add.text(game.config.width - borderUISize * 1.5, 50, `Round` , textConfig).setOrigin(0.5, 0.5);
 
         // droploot/currency text
+        this.add.image(game.config.width - borderUISize * 3.6, 50, 'currency').setOrigin(0.5, 0.5);
         this.add.text(game.config.width - borderUISize * 3, 50, `${dropLoot}`, textConfig).setOrigin(0.5, 0.5);
 
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
