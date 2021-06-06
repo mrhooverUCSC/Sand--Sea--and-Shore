@@ -13,16 +13,12 @@ class Play extends Phaser.Scene {
         // turret assets
         this.load.image('shot', 'images/PlayerShot.png');
         //temp assets for turrets
-        this.load.image('butcher', 'images/ButcherBall.png');
         this.load.image('butcherShot', 'images/ButcherShot.png');
         this.load.image('butcherOption', 'images/ButcherOption.png');
-        this.load.image('waiter', 'images/WaiterBall.png');
         this.load.image('waiterShot', 'images/WaiterShot.png');
         this.load.image('waiterOption', 'images/WaiterOption.png');
-        this.load.image('fryer', 'images/FryerBall.png');
         this.load.image('fryerShot', 'images/FryerShot.png');
         this.load.image('fryerOption', 'images/FryerOption.png');
-        this.load.image('porter', 'images/PorterBall.png');
         this.load.image('porterOption', 'images/PorterOption.png');
         this.load.image('blank', 'images/Blank.png');
 
@@ -34,6 +30,7 @@ class Play extends Phaser.Scene {
         this.load.image('waiterAimer', 'images/WaiterAimer.png');
         this.load.image('waiterProjectile', 'images/WaiterProjectile.png');
         this.load.image('butcherBase', 'images/ButcherBase.png');
+        this.load.image('butcherAimer', 'images/ButcherAimer.png');
         this.load.image('butcherProjectile', 'images/ButcherProjectile.png');
 
         this.load.image('porterBase', 'images/PorterBase.png');
