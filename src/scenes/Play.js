@@ -13,11 +13,8 @@ class Play extends Phaser.Scene {
         // turret assets
         this.load.image('shot', 'images/PlayerShot.png');
         //temp assets for turrets
-        this.load.image('butcherShot', 'images/ButcherShot.png');
         this.load.image('butcherOption', 'images/ButcherOption.png');
-        this.load.image('waiterShot', 'images/WaiterShot.png');
         this.load.image('waiterOption', 'images/WaiterOption.png');
-        this.load.image('fryerShot', 'images/FryerShot.png');
         this.load.image('fryerOption', 'images/FryerOption.png');
         this.load.image('porterOption', 'images/PorterOption.png');
         this.load.image('blank', 'images/Blank.png');

@@ -27,7 +27,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.active = false; //shooting or not
         this.base = null;
         this.type == 'blank'; //stores type of the turret
-        this.bullet == 'butcherShot';
+        this.bullet == 'shot';
         this.reloadSpeed = Infinity;
         this.shotSpeed = 400;
         this.damage = 25;
