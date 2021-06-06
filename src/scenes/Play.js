@@ -130,6 +130,12 @@ class Play extends Phaser.Scene {
             rate: 1,
             loop: false 
         });
+        this.menuSelectSfx = this.sound.add('selecting', { 
+            mute: false,
+            volume: 1,
+            rate: 1,
+            loop: false 
+        });
 
         //The player character and turret's shots
         this.shots = this.add.group({
@@ -166,6 +172,7 @@ class Play extends Phaser.Scene {
     update() {
         // enter menu scene (temporary)
         if(Phaser.Input.Keyboard.JustDown(keyBACKSPACE)) {
+            this.menuSelectSfx.play();
             this.scene.start("menuScene");
         }
 
@@ -226,6 +233,7 @@ class Play extends Phaser.Scene {
         console.log(tower.health);
         if(tower.health <= 0) {
             tower.towerDestroyed();
+            this.menuSelectSfx.play();
             this.scene.start('gameOverScene');
         }
     }
