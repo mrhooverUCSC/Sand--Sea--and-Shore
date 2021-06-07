@@ -4,6 +4,7 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
+        console.log('preload');
         this.load.path = './assets/';
 
         // background
@@ -29,10 +30,8 @@ class Play extends Phaser.Scene {
         this.load.image('butcherBase', 'images/ButcherBase.png');
         this.load.image('butcherAimer', 'images/ButcherAimer.png');
         this.load.image('butcherProjectile', 'images/ButcherProjectile.png');
-
         this.load.image('porterBase', 'images/PorterBase.png');
 
-        this.load.image('blank', 'images/Blank.png');
         // tower assets
         this.load.image('tower', 'images/temp_castle1.png');
         this.load.image('redBAR', 'images/red_bar.png');
@@ -55,7 +54,6 @@ class Play extends Phaser.Scene {
         this.load.audio('crabSpawn', ['audio/crab-claw-pincer.mp3']);
         this.load.audio('crabDeath', ['audio/crab-shell-remove.mp3']);
         this.load.audio('throwing', ['audio/throwing.mp3']);
-        this.load.audio('bgm', ['audio/bgm.mp3']);
 
         //currency
         // We got the bucket idea from: https://www.123rf.com/photo_93022318_stock-vector-bucket-illustration-a-vector-cartoon-illustration-of-an-empty-bucket-.html
@@ -63,6 +61,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        console.log("create");
         this.add.tileSprite(0, 0, game.config.width, game.config.height, 'beachBackground').setOrigin(0, 0);
         let textConfig = {
             fontFamily: 'oswald',

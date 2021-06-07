@@ -8,6 +8,9 @@ class Menu extends Phaser.Scene {
 
         this.loadFont('forturn', './assets/font/Forturn.ttf');          // title font
         this.loadFont('oswald', './assets/font/Oswald-Regular.ttf');
+
+        //load bgm
+        this.load.audio('bgm', './assets/audio/bgm.mp3');
     }
 
     create() {
@@ -48,7 +51,7 @@ class Menu extends Phaser.Scene {
 
     update() {
         if(Phaser.Input.Keyboard.JustDown(keyENTER)) {   // enter play scene
-            this.scene.start("playScene");
+            this.scene.start('playScene');
         }
     }
 
