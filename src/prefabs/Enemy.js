@@ -1,5 +1,6 @@
 class Enemy extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, environment, speed) {
+        console.log(texture == "urchin");
         super(scene, x, y, texture);
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -16,6 +17,25 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.environment = environment;
         this.wave = -Math.PI;
         this.originalY = this.y;
+
+        if(texture == "urchin"){
+            this.anims.play('urchin');
+        }
+        else if(texture == "crab"){
+            this.anims.play('crab');
+        }
+        else if(texture == "turtle"){
+            this.anims.play('turtle');
+        }
+        else if(texture == "octupus"){
+            this.anims.play('octupus');
+        }
+        else if(texture == "pelican"){
+            this.anims.play('pelican');
+        }
+        else if(texture == "seagull"){
+            this.anims.play('seagull');
+        }
     }
 
     update() {

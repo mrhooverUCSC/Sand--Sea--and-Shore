@@ -32,7 +32,7 @@ let keyRIGHT, keyUP, keyDOWN, keySHIFT;
 
 // drop loot management
 let value = 0;
-let dropLoot = 100;
+let dropLoot = 50;
 
 // win condition
 let playerWins = false;
