@@ -28,16 +28,16 @@ let borderPadding = borderUISize / 3;
 let oceanSpeed = 5;
 
 // controls
-let keyRIGHT, keyUP, keyDOWN, keyENTER, keySHIFT, keyBACKSPACE;
-
-// health bar for tower
-let redBar, greenBar;
+let keyRIGHT, keyUP, keyDOWN, keySHIFT;
 
 // drop loot management
 let value, dropLoot = 0;
 
 // win condition
 let playerWins = false;
+
+// current rounds
+let rounds;
 
 /*
 CMPM 120

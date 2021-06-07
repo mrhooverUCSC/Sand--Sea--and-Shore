@@ -34,7 +34,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         // if the wave is over
         if(this.scene.waves.numberOfEnemies == 0) {
             this.scene.waves.ongoingWave = false;
-            this.scene.round++;
+            rounds++;
             this.scene.inputRound.text = 'Start Round';
             this.scene.inputRound.input.enabled = true;
         }
