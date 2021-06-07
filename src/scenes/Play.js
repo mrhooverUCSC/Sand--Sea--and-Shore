@@ -98,7 +98,6 @@ class Play extends Phaser.Scene {
         // health bar for tower
         redBar = this.add.image(0, -50, 'redBAR').setOrigin(0, 0);
         greenBar = this.add.image(0, -50, 'greenBAR').setOrigin(0, 0);
-        let healthLabel = this.add.text(30, 50, 'HP', textConfig).setOrigin(0.5, 0.5);
 
         // droploot/currency text
         this.add.image(game.config.width - borderUISize * 3.6, 20, 'currency').setOrigin(0.5, 0.5);
