@@ -203,8 +203,10 @@ class Play extends Phaser.Scene {
                       0, game.config.height / 2,                    // top left
                       game.config.width, game.config.height / 2];   // top right
 
-        this.roundText = this.add.text(game.config.width - 75, 20, `Round `, {fontFamily: 'oswald', fontSize: '20px', color: '#000000', align: 'left'}).setOrigin(0.5, 0.5);
-    
+        // current round text
+        this.roundText = this.add.text(game.config.width - 75, 20, `Round ${rounds}`, {fontFamily: 'oswald', fontSize: '20px', color: '#000000', align: 'left'}).setOrigin(0.5, 0.5);
+
+
         this.anims.create({
             key: 'wash',
             frames: [
@@ -217,8 +219,6 @@ class Play extends Phaser.Scene {
             defaultTextureKey: 'washer',
             repeat: -1,
         });
-        // current round text
-        this.roundText = this.add.text(game.config.width - 75, 20, `Round ${rounds}`, {fontFamily: 'oswald', fontSize: '20px', color: '#000000', align: 'left'}).setOrigin(0.5, 0.5);
     }
 
     update() {
