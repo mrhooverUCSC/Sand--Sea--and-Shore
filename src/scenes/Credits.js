@@ -35,19 +35,21 @@ class Credits extends Phaser.Scene {
         this.add.text(game.config.width / 2 + 5, game.config.height / 7 + 5, 'Iron Sites', textConfig).setOrigin(0.5);
         textConfig.color = '#b56d07';
         this.add.text(game.config.width / 2, game.config.height / 7, 'Iron Sites', textConfig).setOrigin(0.5);
-        textConfig.fontSize = '25px';
+        textConfig.fontSize = '15px';
 
         textConfig.fontFamily = 'oswald';
         textConfig.color ='#000000';
         // programming
         textConfig.color = '#1db83c';
-        this.add.text(game.config.width / 2, game.config.height / 3 - 20, 'Programming by: Ivan Martinez-Arias\nMatthew Hoover\nAlejandro Silva-Serrano', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width / 3 + 50, game.config.height / 3 - 50, 'Programming by:\nIvan Martinez-Arias\nMatthew Hoover\nAlejandro Silva-Serrano', textConfig).setOrigin(0.5);
         // art
-        textConfig.color = '#161f87';
-        this.add.text(game.config.width / 2, game.config.height / 2 - 20, 'Art by: Alejandro Silva-Serrano\nMatthew Hoover\nIvan Martinez-Arias', textConfig).setOrigin(0.5);
-        // music/sfx
-        textConfig.color = '#e32f22';
-        this.add.text(game.config.width / 2, game.config.height / 2 + 70, 'Music/SFX by: Ivan Martinez-Arias\nMatthew Hoover', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width / 1.5 - 50, game.config.height / 3 - 50, 'Art by:\nAlejandro Silva-Serrano\nMatthew Hoover\nIvan Martinez-Arias', textConfig).setOrigin(0.5);
+        textConfig.color = 'purple';
+        // other sources
+        this.add.text(game.config.width / 3 + 50, game.config.height / 2 - 50, 'Other Art Sources:\nShuttershock\niStock\nFreeVector\nAdobe Stock', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width / 1.5 - 50, game.config.height / 2 - 65, 'Fonts from:\n1001 Free Fonts\nFont Meme', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width / 3 + 50, game.config.height / 2 + 40, 'Music from:\nFreePD', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width / 1.5 - 50, game.config.height / 2 + 40, 'SFX from:\nZapSplat', textConfig).setOrigin(0.5);
 
         textConfig.fontSize = '45px';
         textConfig.color = '#000000';
