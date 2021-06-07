@@ -53,7 +53,6 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
                         shot.flipY = true;
                     }
                     this.shots.add(shot);
-                    //console.log(this.reloadSpeed);
                     this.scene.throwingSfx.play();
                     this.ready = false;
                     this.scene.time.addEvent({

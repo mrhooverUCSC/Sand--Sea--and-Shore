@@ -4,7 +4,7 @@ let config = {
     type: Phaser.CANVAS,
     width: 960,
     height: 640,
-    scene: [ Menu, Play, GameOver ],
+    scene: [ Menu, Play, GameOver, Tutorial, Credits ],
     backgroundColor: '22c9e3',
     zoom: 1.0,
     autoCenter: Phaser.Scale.HORIZONTALLY,
@@ -35,6 +35,9 @@ let redBar, greenBar;
 
 // drop loot management
 let value, dropLoot = 0;
+
+// win condition
+let playerWins = false;
 
 /*
 CMPM 120
