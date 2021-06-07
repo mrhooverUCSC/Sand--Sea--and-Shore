@@ -80,8 +80,21 @@ class Play extends Phaser.Scene {
 
         this.add.rectangle(0, borderPadding * 2.15, game.config.width, borderUISize, 0xFFA500).setOrigin(0, 0);
 
-        this.add.text(165, 15,'Press Backspace to return to Main Menu', textConfig).setOrigin(0.5);
-        this.inputRound = this.add.text(game.config.width / 2, 50,'Press ENTER to Start Round', textConfig).setOrigin(0.5);
+        this.returnToMenu = this.add.text(100, 15,'Return to Main Menu', textConfig).setOrigin(0.5);
+        this.returnToMenu.setInteractive()
+                         .on('pointerover', () => { this.returnToMenu.setStyle({ fill: '#ffff00'}); this.menuSelectingSfx.play(); })
+                         .on('pointerout', () => { this.returnToMenu.setStyle({ fill: '#000000'}); })
+                         .on('pointerdown', () => { this.scene.start("menuScene"); this.menuSelectSfx.play(); this.bgm.stop() });
+
+        this.inputRound = this.add.text(game.config.width / 2, 50,'Start Round', textConfig).setOrigin(0.5);
+        this.inputRound.setInteractive()
+            .on('pointerover', () => { this.inputRound.setStyle({ fill: '#ffff00'}); this.menuSelectingSfx.play(); })
+            .on('pointerout', () => { this.inputRound.setStyle({ fill: '#000000'}); })
+            .on('pointerdown', () => {
+                this.menuSelectSfx.play();
+                this.startCurrentRound();
+                this.inputRound.input.enabled = false;
+        });
 
         // health bar for tower
         redBar = this.add.image(0, -50, 'redBAR').setOrigin(0, 0);
@@ -131,7 +144,13 @@ class Play extends Phaser.Scene {
             rate: 1,
             loop: false 
         });
-        this.menuSelectSfx = this.sound.add('selecting', { 
+        this.menuSelectSfx = this.sound.add('selected', {       // clicking on text
+            mute: false,
+            volume: 1,
+            rate: 1,
+            loop: false 
+        });
+        this.menuSelectingSfx = this.sound.add('selecting', {   // hovering over text
             mute: false,
             volume: 1,
             rate: 1,
@@ -183,16 +202,11 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        // enter menu scene (temporary)
-        if(Phaser.Input.Keyboard.JustDown(keyBACKSPACE)) {
-            this.menuSelectSfx.play();
-            this.scene.start("menuScene");
+        // the player has beaten the game
+        if(this.round >= 26) {
             this.bgm.stop();
-        }
-
-        // start round
-        if(Phaser.Input.Keyboard.JustDown(keyENTER) && !this.waves.ongoingWave) {
-            this.startCurrentRound();
+            playerWins = true;
+            this.scene.start('gameOverScene');
         }
 
         this.player.update();
