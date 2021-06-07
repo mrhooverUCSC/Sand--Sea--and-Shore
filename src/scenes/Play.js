@@ -84,7 +84,7 @@ class Play extends Phaser.Scene {
         this.returnToMenu.setInteractive()
                          .on('pointerover', () => { this.returnToMenu.setStyle({ fill: '#ffff00'}); this.menuSelectingSfx.play(); })
                          .on('pointerout', () => { this.returnToMenu.setStyle({ fill: '#000000'}); })
-                         .on('pointerdown', () => { this.scene.start("gameOverScene"); this.menuSelectSfx.play(); this.bgm.stop() });
+                         .on('pointerdown', () => { this.scene.start("menuScene"); this.menuSelectSfx.play(); this.bgm.stop() });
 
         this.inputRound = this.add.text(game.config.width / 2, 20,'Start Round', textConfig).setOrigin(0.5);
         this.inputRound.setInteractive()
@@ -198,7 +198,7 @@ class Play extends Phaser.Scene {
                            'urchin', 'octupus',    // sea
                            'seagull', 'pelican'];     // sky
         this.waves = new Waves(this);
-        rounds = 22;
+        rounds = 1;
         this.zones = [0, game.config.height - 100,                  // bottom left
                       game.config.width, game.config.height - 100,  // bottom right
                       0, game.config.height / 2,                    // top left
