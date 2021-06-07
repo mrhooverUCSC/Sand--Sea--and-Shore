@@ -39,7 +39,7 @@ class Play extends Phaser.Scene {
         this.load.image('greenBAR', 'images/green_bar.png');
         // enemy assets
         // We got the crab idea from: https://www.dreamstime.com/stock-illustration-cute-cartoon-smiling-crab-vector-hand-drawn-illustration-happy-character-lifting-up-claws-isolated-white-background-image78279193
-        this.load.image('crab', 'images/temp_crab.png');
+        this.load.image('crab', 'images/enemy_crab.png');
         // We got the lobster idea from: https://illustoon.com/?id=1675
         this.load.image('lobster', 'images/enemy_lobster.png');
         // We got the gannet idea from: https://www.birdorable.com/gifts/designs/flying-northern-gannet/z/145934725291845208/
@@ -81,16 +81,12 @@ class Play extends Phaser.Scene {
         this.add.rectangle(0, borderPadding * 2.15, game.config.width, borderUISize, 0xFFA500).setOrigin(0, 0);
 
         this.add.text(165, 15,'Press Backspace to return to Main Menu', textConfig).setOrigin(0.5);
-        this.add.text(game.config.width / 2, 50,'Press ENTER to start round', textConfig).setOrigin(0.5);
-
+        this.inputRound = this.add.text(game.config.width / 2, 50,'Press ENTER to Start Round', textConfig).setOrigin(0.5);
 
         // health bar for tower
         redBar = this.add.image(0, -50, 'redBAR').setOrigin(0, 0);
         greenBar = this.add.image(0, -50, 'greenBAR').setOrigin(0, 0);
         let healthLabel = this.add.text(30, 50, 'HP', textConfig).setOrigin(0.5, 0.5);
-
-        // round text
-        this.add.text(game.config.width - borderUISize * 1.5, 50, `Round` , textConfig).setOrigin(0.5, 0.5);
 
         // droploot/currency text
         this.add.image(game.config.width - borderUISize * 3.6, 50, 'currency').setOrigin(0.5, 0.5);
@@ -135,6 +131,12 @@ class Play extends Phaser.Scene {
             rate: 1,
             loop: false 
         });
+        this.menuSelectSfx = this.sound.add('selecting', { 
+            mute: false,
+            volume: 1,
+            rate: 1,
+            loop: false 
+        });
         this.bgm = this.sound.add('bgm', {
             mute: false,
             volume: .75,
@@ -167,40 +169,30 @@ class Play extends Phaser.Scene {
         this.rightTurrets.add(this.turret4).add(this.turret5).add(this.turret6);
 
         this.environmentTypes = ["Sea", "Sky", "Shore"];
+        this.enemyTypes = ['crab', 'lobster',       // shore
+                           'urchin', 'stingray',    // sea
+                           'seagull', 'gannet'];     // sky
         this.waves = new Waves(this);
-        this.round = 0;
+        this.round = 16;
         this.zones = [0, game.config.height - 100,                  // bottom left
                       game.config.width, game.config.height - 100,  // bottom right
                       0, game.config.height / 2,                    // top left
                       game.config.width, game.config.height / 2];   // top right
 
-        let roundText = this.add.text(game.config.width - 28, 50, `${this.round}`, {fontFamily: 'oswald', fontSize: '20px', color: '#000000'}).setOrigin(0.5, 0.5);
+        this.roundText = this.add.text(game.config.width - 75, 50, `Round ${this.round}`, {fontFamily: 'oswald', fontSize: '20px', color: '#000000', align: 'left'}).setOrigin(0.5, 0.5);
     }
 
     update() {
         // enter menu scene (temporary)
         if(Phaser.Input.Keyboard.JustDown(keyBACKSPACE)) {
+            this.menuSelectSfx.play();
             this.scene.start("menuScene");
             this.bgm.stop();
         }
 
         // start round
         if(Phaser.Input.Keyboard.JustDown(keyENTER) && !this.waves.ongoingWave) {
-            this.round++;
-            console.log(`Round ${this.round}`);
-            this.roundText = `${this.round}`;
-            this.waves.ongoingWave = true;
-            this.time.delayedCall(1000, () => {
-                // spawns each zone once for now
-                let speed = 15;
-                // sea enemies
-                this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + this.round, speed, this.environmentTypes[0], 'crab');
-                this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + this.round, speed, this.environmentTypes[0], 'urchin');
-                // sky enemies
-                this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + this.round, speed, this.environmentTypes[1], 'seagull');
-                this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + this.round, speed, this.environmentTypes[1], 'seagull');
-                console.log(`Number of Enemies in Current Wave: ${this.waves.numberOfEnemies}`);
-            });
+            this.startCurrentRound();
         }
 
         this.player.update();
@@ -224,6 +216,63 @@ class Play extends Phaser.Scene {
         eg.add(newEnemy);
     }
 
+    startCurrentRound() {
+        this.roundText.text = `Round ${this.round}`;
+        this.waves.ongoingWave = true;
+        this.inputRound.text = ' ';
+
+        this.time.delayedCall(1000, () => {
+            // starting difficulty starts with ground enemies (Rounds 1-5)
+            if(this.round <= 5) {
+                // left ground/sea enemies
+                this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(0, 1)]);
+                // right ground/sea enemies
+                this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(2, 3)]);
+            } else if(this.round <= 10) {   // spawns sky enemies (Rounds 6-10)
+                // left sky enemies
+                this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+                // right sky enemies
+                this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+            } else if(this.round <= 15) {   // spawns alternating left and right side (Rounds 11-15)
+                // left side
+                if(Phaser.Math.Between(0, 1) == 1) {
+                    this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(0, 1)]);
+                } else {
+                    this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+                }
+
+                // right side
+                if(Phaser.Math.Between(0, 1) == 1) {
+                    this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+                } else {
+                    this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(2, 3)]);
+                }
+            } else if(this.round <= 19) { // spawns 3 (Rounds 16-19)
+                // removes on spawn zone as to leave it as 3 at a time
+                let removeZone = Phaser.Math.Between(1, 4);
+
+                if(removeZone != 1) {
+                    this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(0, 1)]);
+                }
+                if(removeZone != 2) {
+                    this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(2, 3)]);
+                }
+                if(removeZone != 3) {
+                    this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+                }
+                if(removeZone != 4) {
+                    this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+                }
+            } else {    // spawns all zones (Rounds 20-25)
+                this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(0, 1)]);
+                this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(2, 3)]);
+                this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+                this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+            }
+
+        });
+    }
+
     enemyHitByPlayer(enemy, shot){
         shot.destroy();
         enemy.health -= 50; //deal damage
@@ -235,9 +284,9 @@ class Play extends Phaser.Scene {
     collisionOccurred(tower, enemy) {
         enemy.enemyDeath();
         tower.health -= 25;
-        console.log(tower.health);
         if(tower.health <= 0) {
             tower.towerDestroyed();
+            this.bgm.stop();
             this.scene.start('gameOverScene');
         }
     }

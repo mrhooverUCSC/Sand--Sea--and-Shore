@@ -34,9 +34,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         // if the wave is over
         if(this.scene.waves.numberOfEnemies == 0) {
             this.scene.waves.ongoingWave = false;
-            //this.scene.round++;
+            this.scene.round++;
+            this.scene.inputRound.text = 'Press ENTER to Start Round';
         }
-        console.log(`Current Enemies: ${this.scene.waves.numberOfEnemies}`);
 
         this.scene.crabDeath.play();
         this.isDead = true;
@@ -49,7 +49,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             if(value % 2 == 0) {
                 dropLoot++;
             }
-            //console.log('Droploot is now ' + dropLoot);
         }
     }
 }

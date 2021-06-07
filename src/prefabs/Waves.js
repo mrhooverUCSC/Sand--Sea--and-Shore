@@ -20,7 +20,8 @@ class Waves extends Phaser.Physics.Arcade.Sprite {
         }
         for(let i = 0; i < number; i++) {
             let varyPos = Phaser.Math.Between(-35, 35);
-            let varyTime = Phaser.Math.Between(500, 3000);
+            let varyTime = Phaser.Math.Between(1000, 30000);
+            if(Math.floor(Math.random() * 1) == 1) { varyTime += this.scene.round * 1000; }
             this.scene.time.delayedCall(varyTime, () => {
                 this.scene.addEnemy(zoneX, zoneY + varyPos, speed, typeE, typeL, enemyGroup);
                 this.scene.spawnSound.play();

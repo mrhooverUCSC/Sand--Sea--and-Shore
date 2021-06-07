@@ -8,6 +8,8 @@ class Menu extends Phaser.Scene {
 
         this.loadFont('forturn', './assets/font/Forturn.ttf');          // title font
         this.loadFont('oswald', './assets/font/Oswald-Regular.ttf');
+
+        this.load.audio('selecting', ['./assets/audio/select-menu.mp3']);
     }
 
     create() {
@@ -39,6 +41,13 @@ class Menu extends Phaser.Scene {
         this.add.text(game.config.width/2, game.config.height/3 + 3* borderUISize, `Control the Player circle with Up/Down arrows to rotate, and Right to shoot`, menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/3 + 4* borderUISize, `Press ENTER to start`, menuConfig).setOrigin(0.5);
 
+        this.menuSelectSfx = this.sound.add('selecting', { 
+            mute: false,
+            volume: 1,
+            rate: 1,
+            loop: false 
+        });
+
         // key inputs
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         // list of scenes
@@ -48,6 +57,7 @@ class Menu extends Phaser.Scene {
 
     update() {
         if(Phaser.Input.Keyboard.JustDown(keyENTER)) {   // enter play scene
+            this.menuSelectSfx.play();
             this.scene.start("playScene");
         }
     }
