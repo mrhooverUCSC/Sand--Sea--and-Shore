@@ -34,7 +34,8 @@ let keyRIGHT, keyUP, keyDOWN, keyENTER, keySHIFT, keyBACKSPACE;
 let redBar, greenBar;
 
 // drop loot management
-let value, dropLoot = 0;
+let value = 0;
+let dropLoot = 50;
 
 // win condition
 let playerWins = false;

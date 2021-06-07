@@ -93,42 +93,64 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
     }
 
     setButcher(){
-        this.setTexture('butcherAimer');
-        this.bullet = 'butcherProjectile';
-        this.base = this.scene.add.sprite(this.x, this.y, 'butcherBase').setOrigin(0.5, 0.5);
-        this.reloadSpeed = 1000;
-        this.damage = 100;
-
-        this.allies.getChildren().forEach(x => {if(x.reloadSpeed == Infinity){this.reloadSpeed = this.reloadSpeed * 0.5}});
-        this.turretSetup();
+        if(dropLoot >= 75){
+            dropLoot -= 75;
+            this.setTexture('butcherAimer');
+            this.bullet = 'butcherProjectile';
+            this.base = this.scene.add.sprite(this.x, this.y, 'butcherBase').setOrigin(0.5, 0.5);
+            this.reloadSpeed = 1000;
+            this.damage = 100;
+    
+            this.allies.getChildren().forEach(x => {if(x.reloadSpeed == Infinity){this.reloadSpeed = this.reloadSpeed * 0.5}});
+            this.turretSetup();    
+        }
+        else{
+            this.scene.error.play();
+        }
     }
 
     setWaiter(){
-        this.setTexture('waiterAimer');
-        this.bullet = 'waiterProjectile';
-        this.base = this.scene.add.sprite(this.x, this.y, 'waiterBase').setOrigin(0.5, 0.5);
-        this.reloadSpeed = 250;
-        this.damage = 25;
-
-        this.allies.getChildren().forEach(x => {if(x.reloadSpeed == Infinity){this.reloadSpeed = this.reloadSpeed * 0.5}});
-        this.turretSetup();
+        if(dropLoot >= 50){
+            dropLoot -= 50;
+            this.setTexture('waiterAimer');
+            this.bullet = 'waiterProjectile';
+            this.base = this.scene.add.sprite(this.x, this.y, 'waiterBase').setOrigin(0.5, 0.5);
+            this.reloadSpeed = 250;
+            this.damage = 25;
+    
+            this.allies.getChildren().forEach(x => {if(x.reloadSpeed == Infinity){this.reloadSpeed = this.reloadSpeed * 0.5}});
+            this.turretSetup();    
+        }
+        else{
+            this.scene.error.play();
+        }
     }
 
     setFryer(){
-        this.setTexture('fryerAimer'); //aiming png
-        this.bullet = 'fryerProjectile'; //shot png
-        this.base = this.scene.add.sprite(this.x, this.y, 'fryerBase').setOrigin(0.5, 0.5); //base png
-        this.reloadSpeed = 25;
-        this.shotSpeed = 1000;
-        this.damage = 0;
-        this.turretSetup();
+        if(dropLoot >= 100){
+            this.setTexturef('fryerAimer'); //aiming png
+            this.bullet = 'fryerProjectile'; //shot png
+            this.base = this.scene.add.sprite(this.x, this.y, 'fryerBase').setOrigin(0.5, 0.5); //base png
+            this.reloadSpeed = 25;
+            this.shotSpeed = 1000;
+            this.damage = 0;
+            this.turretSetup();    
+        }
+        else{
+            this.scene.error.play();
+        }
     }
 
     setPorter(){
-        this.setTexture('porterBase');
-        this.reloadSpeed = Infinity;
-        this.turretSetup();
-        this.allies.getChildren().forEach(x => x.reloadSpeed = x.reloadSpeed - 75);
+        if(dropLoot >= 100){
+            this.setTexture('porterBase');
+            this.reloadSpeed = Infinity;
+            this.turretSetup();
+            this.allies.getChildren().forEach(x => x.reloadSpeed = x.reloadSpeed - 75);    
+        }
+        else{
+            this.scene.error.play();
+        }
     }
 
     turretSetup(){

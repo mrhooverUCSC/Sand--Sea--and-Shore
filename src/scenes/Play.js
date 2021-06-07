@@ -4,7 +4,6 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        console.log('preload');
         this.load.path = './assets/';
 
         // background
@@ -12,7 +11,7 @@ class Play extends Phaser.Scene {
         // player
         this.load.image('player', 'images/PlayerBall.png');
         // turret assets
-        this.load.image('shot', 'images/PlayerShot.png');
+        this.load.image('projectile', 'images/PlayerProjectile.png');
         //temp assets for turrets
         this.load.image('butcherOption', 'images/ButcherOption.png');
         this.load.image('waiterOption', 'images/WaiterOption.png');
@@ -53,6 +52,7 @@ class Play extends Phaser.Scene {
         this.load.audio('crabSpawn', ['audio/crab-claw-pincer.mp3']);
         this.load.audio('crabDeath', ['audio/crab-shell-remove.mp3']);
         this.load.audio('throwing', ['audio/throwing.mp3']);
+        this.load.audio('error', ['audio/error.mp3']);
 
         //currency
         // We got the bucket idea from: https://www.123rf.com/photo_93022318_stock-vector-bucket-illustration-a-vector-cartoon-illustration-of-an-empty-bucket-.html
@@ -60,7 +60,6 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        console.log("create");
         this.add.tileSprite(0, 0, game.config.width, game.config.height, 'beachBackground').setOrigin(0, 0);
         let textConfig = {
             fontFamily: 'oswald',
@@ -154,12 +153,19 @@ class Play extends Phaser.Scene {
             rate: 1,
             loop: false 
         });
+        this.error = this.sound.add('error', {
+            mute: false,
+            volume: 1,
+            rate: 1,
+            loop: false
+        });
         this.bgm = this.sound.add('bgm', {
             mute: false,
             volume: .75,
             rate: 1,
             loop: true
-        })
+        });
+        
         this.bgm.play();
 
         //The player character and turret's shots
@@ -214,6 +220,8 @@ class Play extends Phaser.Scene {
         // checks collision on the tower
         this.physics.world.collide(this.tower, this.enemyLeft, this.collisionOccurred, null, this);
         this.physics.world.collide(this.tower, this.enemyRight, this.collisionOccurred, null, this);
+
+        this.currency.text = `${dropLoot}`;
     }
 
     // parameters: x Position, y Position, speed, type of enemy, environment of enemy, enemy group
