@@ -28,7 +28,7 @@ let borderPadding = borderUISize / 3;
 let oceanSpeed = 5;
 
 // controls
-let keyRIGHT, keyUP, keyDOWN, keyENTER, keySHIFT, keySPACE, keyBACKSPACE;
+let keyRIGHT, keyUP, keyDOWN, keyENTER, keySHIFT, keyBACKSPACE;
 
 // health bar for tower
 let redBar, greenBar;
