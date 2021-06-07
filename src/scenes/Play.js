@@ -173,7 +173,7 @@ class Play extends Phaser.Scene {
                            'urchin', 'stingray',    // sea
                            'seagull', 'gannet'];     // sky
         this.waves = new Waves(this);
-        this.round = 16;
+        this.round = 1;
         this.zones = [0, game.config.height - 100,                  // bottom left
                       game.config.width, game.config.height - 100,  // bottom right
                       0, game.config.height / 2,                    // top left
