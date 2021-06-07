@@ -68,7 +68,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             value = Phaser.Math.Between(1, 100);
             //console.log('The value is ' + value);
             if(value % 2 == 0) {
-                dropLoot+=3;
+                dropLoot+=2;
             }
         }
     }
