@@ -100,8 +100,6 @@ class Play extends Phaser.Scene {
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-        keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-        keyBACKSPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.BACKSPACE);
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         // Tower
@@ -191,23 +189,25 @@ class Play extends Phaser.Scene {
         this.turret6 = new Turret(this, 3 * game.config.width/5 - 45, 4*game.config.height/5, this.enemyRight, this.rightTurrets).setOrigin(0.5, 0.5);
         this.rightTurrets.add(this.turret4).add(this.turret5).add(this.turret6);
 
+        // stores each type of zone/environment
         this.environmentTypes = ["Sea", "Sky", "Shore"];
         this.enemyTypes = ['crab', 'turtle',       // shore
                            'urchin', 'octupus',    // sea
                            'seagull', 'pelican'];     // sky
         this.waves = new Waves(this);
-        this.round = 1;
+        rounds = 1;
         this.zones = [0, game.config.height - 100,                  // bottom left
                       game.config.width, game.config.height - 100,  // bottom right
                       0, game.config.height / 2,                    // top left
                       game.config.width, game.config.height / 2];   // top right
 
-        this.roundText = this.add.text(game.config.width - 75, 20, `Round `, {fontFamily: 'oswald', fontSize: '20px', color: '#000000', align: 'left'}).setOrigin(0.5, 0.5);
+        // current round text
+        this.roundText = this.add.text(game.config.width - 75, 20, `Round ${rounds}`, {fontFamily: 'oswald', fontSize: '20px', color: '#000000', align: 'left'}).setOrigin(0.5, 0.5);
     }
 
     update() {
         // the player has beaten the game
-        if(this.round >= 26) {
+        if(rounds >= 26) {
             this.bgm.stop();
             playerWins = true;
             this.scene.start('gameOverScene');
@@ -234,57 +234,57 @@ class Play extends Phaser.Scene {
     }
 
     startCurrentRound() {
-        this.roundText.text = `Round ${this.round}`;
+        this.roundText.text = `Round ${rounds}`;
         this.waves.ongoingWave = true;
         this.inputRound.text = ' ';
 
         this.time.delayedCall(1000, () => {
             // starting difficulty starts with ground enemies (Rounds 1-5)
-            if(this.round <= 5) {
+            if(rounds <= 5) {
                 // left ground/sea enemies
-                this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(0, 1)]);
+                this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(0, 1)]);
                 // right ground/sea enemies
-                this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(2, 3)]);
-            } else if(this.round <= 10) {   // spawns sky enemies (Rounds 6-10)
+                this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(2, 3)]);
+            } else if(rounds <= 10) {   // spawns sky enemies (Rounds 6-10)
                 // left sky enemies
-                this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+                this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
                 // right sky enemies
-                this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
-            } else if(this.round <= 15) {   // spawns alternating left and right side (Rounds 11-15)
+                this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+            } else if(rounds <= 15) {   // spawns alternating left and right side (Rounds 11-15)
                 // left side
                 if(Phaser.Math.Between(0, 1) == 1) {
-                    this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(0, 1)]);
+                    this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(0, 1)]);
                 } else {
-                    this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+                    this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
                 }
 
                 // right side
                 if(Phaser.Math.Between(0, 1) == 1) {
-                    this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+                    this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
                 } else {
-                    this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(2, 3)]);
+                    this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(2, 3)]);
                 }
-            } else if(this.round <= 19) { // spawns 3 (Rounds 16-19)
+            } else if(rounds <= 19) { // spawns 3 (Rounds 16-19)
                 // removes on spawn zone as to leave it as 3 at a time
                 let removeZone = Phaser.Math.Between(1, 4);
 
                 if(removeZone != 1) {
-                    this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(0, 1)]);
+                    this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(0, 1)]);
                 }
                 if(removeZone != 2) {
-                    this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(2, 3)]);
+                    this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(2, 3)]);
                 }
                 if(removeZone != 3) {
-                    this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+                    this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
                 }
                 if(removeZone != 4) {
-                    this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+                    this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
                 }
             } else {    // spawns all zones (Rounds 20-25)
-                this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(0, 1)]);
-                this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(2, 3)]);
-                this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
-                this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + this.round, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+                this.waves.spawn(this.zones[0], this.zones[1], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(0, 1)]);
+                this.waves.spawn(this.zones[2], this.zones[3], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[0], this.enemyTypes[Phaser.Math.Between(2, 3)]);
+                this.waves.spawn(this.zones[4], this.zones[5], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
+                this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + rounds, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
             }
 
         });
