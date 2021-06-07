@@ -35,8 +35,7 @@ class Play extends Phaser.Scene {
         this.load.image('blank', 'images/Blank.png');
         // tower assets
         this.load.image('tower', 'images/temp_castle1.png');
-        this.load.image('redBAR', 'images/red_bar.png');
-        this.load.image('greenBAR', 'images/green_bar.png');
+    
         // enemy assets
         // We got the crab idea from: https://www.dreamstime.com/stock-illustration-cute-cartoon-smiling-crab-vector-hand-drawn-illustration-happy-character-lifting-up-claws-isolated-white-background-image78279193
         this.load.image('crab', 'images/enemy_crab.png');
@@ -78,7 +77,7 @@ class Play extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        this.add.rectangle(0, borderPadding * 2.15, game.config.width, borderUISize, 0xFFA500).setOrigin(0, 0);
+        this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFA500).setOrigin(0, 0);
 
         this.returnToMenu = this.add.text(100, 15,'Return to Main Menu', textConfig).setOrigin(0.5);
         this.returnToMenu.setInteractive()
@@ -102,8 +101,8 @@ class Play extends Phaser.Scene {
         let healthLabel = this.add.text(30, 50, 'HP', textConfig).setOrigin(0.5, 0.5);
 
         // droploot/currency text
-        this.add.image(game.config.width - borderUISize * 3.6, 50, 'currency').setOrigin(0.5, 0.5);
-        this.add.text(game.config.width - borderUISize * 3, 50, `${dropLoot}`, textConfig).setOrigin(0.5, 0.5);
+        this.add.image(game.config.width - borderUISize * 3.6, 20, 'currency').setOrigin(0.5, 0.5);
+        this.currency = this.add.text(game.config.width - borderUISize * 3, 20, `${dropLoot}`, textConfig).setOrigin(0.5, 0.5);
 
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
@@ -116,6 +115,10 @@ class Play extends Phaser.Scene {
         this.tower = new Tower(this, game.config.width / 2, game.config.height - 260, 'tower').setOrigin(0.5, 0.5);
         this.tower.setScale(1.55);
         this.tower.displayHeight = game.config.height * .75;
+
+        // tower's health
+        this.towerHealth = this.add.text(70, 20, `${this.tower.health}`, textConfig).setOrigin(0.5, 0.5);
+        let healthLabel = this.add.text(30, 20, 'HP :', textConfig).setOrigin(0.5, 0.5);
 
         //Enemy groups
         this.enemyLeft = this.add.group({
@@ -198,7 +201,7 @@ class Play extends Phaser.Scene {
                       0, game.config.height / 2,                    // top left
                       game.config.width, game.config.height / 2];   // top right
 
-        this.roundText = this.add.text(game.config.width - 75, 50, `Round ${this.round}`, {fontFamily: 'oswald', fontSize: '20px', color: '#000000', align: 'left'}).setOrigin(0.5, 0.5);
+        this.roundText = this.add.text(game.config.width - 75, 20, `Round ${this.round}`, {fontFamily: 'oswald', fontSize: '20px', color: '#000000', align: 'left'}).setOrigin(0.5, 0.5);
     }
 
     update() {
@@ -216,9 +219,6 @@ class Play extends Phaser.Scene {
         // checks collision on the tower
         this.physics.world.collide(this.tower, this.enemyLeft, this.collisionOccurred, null, this);
         this.physics.world.collide(this.tower, this.enemyRight, this.collisionOccurred, null, this);
-
-        // animating health bar
-        greenBar.setScale(this.tower.health / this.tower.maxHealth, 1);
     }
 
     // parameters: x Position, y Position, speed, type of enemy, environment of enemy, enemy group
