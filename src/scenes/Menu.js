@@ -22,7 +22,7 @@ class Menu extends Phaser.Scene {
         // menu text configuration  
         let menuConfig = {
             fontFamily: 'forturn',
-            fontSize: '60px',
+            fontSize: '80px',
             color: '#999999',
             align: 'center',
             padding: {
@@ -98,4 +98,6 @@ class Menu extends Phaser.Scene {
             return error;
         });
     }
+
+    
 }

@@ -36,18 +36,18 @@ class Play extends Phaser.Scene {
         this.load.image('tower', 'images/temp_castle1.png');
     
         // enemy assets
-        // We got the crab idea from: https://www.dreamstime.com/stock-illustration-cute-cartoon-smiling-crab-vector-hand-drawn-illustration-happy-character-lifting-up-claws-isolated-white-background-image78279193
-        this.load.image('crab', 'images/enemy_crab.png');
-        // We got the lobster idea from: https://illustoon.com/?id=1675
-        this.load.image('lobster', 'images/enemy_lobster.png');
-        // We got the gannet idea from: https://www.birdorable.com/gifts/designs/flying-northern-gannet/z/145934725291845208/
-        this.load.image('gannet', 'images/enemy_gannet.png');
+        // We got the crab idea from: https://stock.adobe.com/images/crab-walking-animation-sequence-cartoon-vector/277552587?as_campaign=ftmigration2&as_channel=dpcft&as_campclass=brand&as_source=ft_web&as_camptype=acquisition&as_audience=users&as_content=closure_asset-detail-page
+        this.load.atlas('crab', 'spritesheets/spritesheet (4).png', 'jsonFiles/sprites (4).json');
+        // We got the turtle idea from: https://www.freevector.com/free-cartoon-turtle-vector-18447
+        this.load.atlas('turtle', 'spritesheets/spritesheet (3).png', 'jsonFiles/sprites (3).json');
         // We got the seagull idea from: https://www.istockphoto.com/illustrations/seagull
-        this.load.image('seagull', 'images/enemy_seagull.png');
-        // We got the stingray idea from: https://www.vectorstock.com/royalty-free-vectors/stingray-clipart-vectors
-        this.load.image('stingray', 'images/enemy_stingray.png');
+        this.load.atlas('seagull', 'spritesheets/spritesheet (7).png', 'jsonFiles/sprites (7).json');
+        // We got the pelican idea from: https://www.istockphoto.com/vector/animal-animation-sequence-pelican-flying-cartoon-vector-gm1270160701-373211831
+        this.load.atlas('pelican', 'spritesheets/spritesheet (6).png', 'jsonFiles/sprites (6).json');
         // We got the urchin idea from: https://www.shutterstock.com/search/urchin+cartoon
-        this.load.image('urchin', 'images/enemy_urchin.png');
+        this.load.atlas('urchin', 'spritesheets/spritesheet (2).png', 'jsonFiles/sprites (2).json');
+        // We got the octupus idea from: https://www.shutterstock.com/image-illustration/cartoon-octopus-swimming-368217197
+        this.load.atlas('octupus', 'spritesheets/spritesheet (5).png', 'jsonFiles/sprites (5).json');
 
         // audio
         this.load.audio('crabSpawn', ['audio/crab-claw-pincer.mp3']);
@@ -78,13 +78,13 @@ class Play extends Phaser.Scene {
 
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFA500).setOrigin(0, 0);
 
-        this.returnToMenu = this.add.text(100, 15,'Return to Main Menu', textConfig).setOrigin(0.5);
+        this.returnToMenu = this.add.text(100, 20,'Return to Main Menu', textConfig).setOrigin(0.5);
         this.returnToMenu.setInteractive()
                          .on('pointerover', () => { this.returnToMenu.setStyle({ fill: '#ffff00'}); this.menuSelectingSfx.play(); })
                          .on('pointerout', () => { this.returnToMenu.setStyle({ fill: '#000000'}); })
                          .on('pointerdown', () => { this.scene.start("menuScene"); this.menuSelectSfx.play(); this.bgm.stop() });
 
-        this.inputRound = this.add.text(game.config.width / 2, 50,'Start Round', textConfig).setOrigin(0.5);
+        this.inputRound = this.add.text(game.config.width / 2, 20,'Start Round', textConfig).setOrigin(0.5);
         this.inputRound.setInteractive()
             .on('pointerover', () => { this.inputRound.setStyle({ fill: '#ffff00'}); this.menuSelectingSfx.play(); })
             .on('pointerout', () => { this.inputRound.setStyle({ fill: '#000000'}); })
@@ -93,10 +93,6 @@ class Play extends Phaser.Scene {
                 this.startCurrentRound();
                 this.inputRound.input.enabled = false;
         });
-
-        // health bar for tower
-        redBar = this.add.image(0, -50, 'redBAR').setOrigin(0, 0);
-        greenBar = this.add.image(0, -50, 'greenBAR').setOrigin(0, 0);
 
         // droploot/currency text
         this.add.image(game.config.width - borderUISize * 3.6, 20, 'currency').setOrigin(0.5, 0.5);
@@ -115,8 +111,9 @@ class Play extends Phaser.Scene {
         this.tower.displayHeight = game.config.height * .75;
 
         // tower's health
-        this.towerHealth = this.add.text(70, 20, `${this.tower.health}`, textConfig).setOrigin(0.5, 0.5);
-        let healthLabel = this.add.text(30, 20, 'HP :', textConfig).setOrigin(0.5, 0.5);
+        textConfig.color = 'green';
+        let healthLabel = this.add.text(game.config.width / 2 - 200, 20, 'HP :', textConfig).setOrigin(0.5, 0.5);
+        this.towerHealth = this.add.text(game.config.width / 2 - 150, 20, `${this.tower.health}`, textConfig).setOrigin(0.5, 0.5);
 
         //Enemy groups
         this.enemyLeft = this.add.group({
@@ -189,9 +186,9 @@ class Play extends Phaser.Scene {
         this.rightTurrets.add(this.turret4).add(this.turret5).add(this.turret6);
 
         this.environmentTypes = ["Sea", "Sky", "Shore"];
-        this.enemyTypes = ['crab', 'lobster',       // shore
-                           'urchin', 'stingray',    // sea
-                           'seagull', 'gannet'];     // sky
+        this.enemyTypes = ['crab', 'turtle',       // shore
+                           'urchin', 'octupus',    // sea
+                           'seagull', 'pelican'];     // sky
         this.waves = new Waves(this);
         this.round = 1;
         this.zones = [0, game.config.height - 100,                  // bottom left
@@ -199,7 +196,7 @@ class Play extends Phaser.Scene {
                       0, game.config.height / 2,                    // top left
                       game.config.width, game.config.height / 2];   // top right
 
-        this.roundText = this.add.text(game.config.width - 75, 20, `Round ${this.round}`, {fontFamily: 'oswald', fontSize: '20px', color: '#000000', align: 'left'}).setOrigin(0.5, 0.5);
+        this.roundText = this.add.text(game.config.width - 75, 20, `Round `, {fontFamily: 'oswald', fontSize: '20px', color: '#000000', align: 'left'}).setOrigin(0.5, 0.5);
     }
 
     update() {
