@@ -84,7 +84,7 @@ class Play extends Phaser.Scene {
         this.returnToMenu.setInteractive()
                          .on('pointerover', () => { this.returnToMenu.setStyle({ fill: '#ffff00'}); this.menuSelectingSfx.play(); })
                          .on('pointerout', () => { this.returnToMenu.setStyle({ fill: '#000000'}); })
-                         .on('pointerdown', () => { this.scene.start("gameOverScene"); this.menuSelectSfx.play(); this.bgm.stop() });
+                         .on('pointerdown', () => { this.scene.start("menuScene"); this.menuSelectSfx.play(); this.bgm.stop() });
 
         this.inputRound = this.add.text(game.config.width / 2, 20,'Start Round', textConfig).setOrigin(0.5);
         this.inputRound.setInteractive()
