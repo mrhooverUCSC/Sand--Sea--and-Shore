@@ -35,7 +35,7 @@ let redBar, greenBar;
 
 // drop loot management
 let value = 0;
-let dropLoot = 50;
+let dropLoot = 100;
 
 // win condition
 let playerWins = false;

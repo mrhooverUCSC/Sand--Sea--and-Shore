@@ -29,7 +29,9 @@ class Play extends Phaser.Scene {
         this.load.image('butcherBase', 'images/ButcherBase.png');
         this.load.image('butcherAimer', 'images/ButcherAimer.png');
         this.load.image('butcherProjectile', 'images/ButcherProjectile.png');
+
         this.load.image('porterBase', 'images/PorterBase.png');
+        this.load.atlas('porterSheet', 'spritesheets/porterSpriteSheet.png', 'jsonFiles/porterSpriteJson.json');
 
         // tower assets
         this.load.image('tower', 'images/temp_castle1.png');
@@ -203,6 +205,19 @@ class Play extends Phaser.Scene {
                       game.config.width, game.config.height / 2];   // top right
 
         this.roundText = this.add.text(game.config.width - 75, 20, `Round `, {fontFamily: 'oswald', fontSize: '20px', color: '#000000', align: 'left'}).setOrigin(0.5, 0.5);
+    
+        this.anims.create({
+            key: 'wash',
+            frames: [
+                {frame: 'PorterBase'},
+                {frame: 'PorterBase-2'},
+                {frame: 'PorterBase-3'},
+                {frame: 'PorterBase-4'},
+                {frame: 'PorterBase-5'},
+            ],
+            defaultTextureKey: 'washer',
+            repeat: -1,
+        });
     }
 
     update() {

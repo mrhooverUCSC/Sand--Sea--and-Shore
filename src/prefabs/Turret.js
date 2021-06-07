@@ -144,6 +144,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
     setPorter(){
         if(dropLoot >= 100){
             this.setTexture('porterBase');
+            this.anims.play('wash');
             this.reloadSpeed = Infinity;
             this.turretSetup();
             this.allies.getChildren().forEach(x => x.reloadSpeed = x.reloadSpeed - 75);    
