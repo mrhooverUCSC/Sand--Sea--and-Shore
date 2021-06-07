@@ -79,13 +79,13 @@ class Play extends Phaser.Scene {
 
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFA500).setOrigin(0, 0);
 
-        this.returnToMenu = this.add.text(100, 15,'Return to Main Menu', textConfig).setOrigin(0.5);
+        this.returnToMenu = this.add.text(100, 20,'Return to Main Menu', textConfig).setOrigin(0.5);
         this.returnToMenu.setInteractive()
                          .on('pointerover', () => { this.returnToMenu.setStyle({ fill: '#ffff00'}); this.menuSelectingSfx.play(); })
                          .on('pointerout', () => { this.returnToMenu.setStyle({ fill: '#000000'}); })
                          .on('pointerdown', () => { this.scene.start("menuScene"); this.menuSelectSfx.play(); this.bgm.stop() });
 
-        this.inputRound = this.add.text(game.config.width / 2, 50,'Start Round', textConfig).setOrigin(0.5);
+        this.inputRound = this.add.text(game.config.width / 2, 20,'Start Round', textConfig).setOrigin(0.5);
         this.inputRound.setInteractive()
             .on('pointerover', () => { this.inputRound.setStyle({ fill: '#ffff00'}); this.menuSelectingSfx.play(); })
             .on('pointerout', () => { this.inputRound.setStyle({ fill: '#000000'}); })
@@ -116,8 +116,9 @@ class Play extends Phaser.Scene {
         this.tower.displayHeight = game.config.height * .75;
 
         // tower's health
-        this.towerHealth = this.add.text(70, 20, `${this.tower.health}`, textConfig).setOrigin(0.5, 0.5);
-        let healthLabel = this.add.text(30, 20, 'HP :', textConfig).setOrigin(0.5, 0.5);
+        textConfig.color = 'green';
+        let healthLabel = this.add.text(game.config.width / 2 - 200, 20, 'HP :', textConfig).setOrigin(0.5, 0.5);
+        this.towerHealth = this.add.text(game.config.width / 2 - 150, 20, `${this.tower.health}`, textConfig).setOrigin(0.5, 0.5);
 
         //Enemy groups
         this.enemyLeft = this.add.group({
