@@ -28,7 +28,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.base = null;
         this.type == 'blank'; //stores type of the turret
         this.bullet == 'shot';
-        this.reloadSpeed = Infinity;
+        this.reloadSpeed = 9999999999;
         this.shotSpeed = 400;
         this.damage = 25;
     }
@@ -68,6 +68,10 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
     }
 
     activate(){
+        if(this.reloadSpeed === Infinity){
+            this.allies.getChildren().forEach(x => x.reloadSpeed = x.reloadSpeed + 75);
+            this.anims.stop();
+        }
         this.setTexture('blank');
         if(this.base != null){
             this.base.destroy();
@@ -98,6 +102,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
             this.setTexture('butcherAimer');
             this.bullet = 'butcherProjectile';
             this.base = this.scene.add.sprite(this.x, this.y, 'butcherBase').setOrigin(0.5, 0.5);
+            this.depth = 100;
             this.reloadSpeed = 1000;
             this.damage = 100;
     
@@ -128,7 +133,8 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
 
     setFryer(){
         if(dropLoot >= 100){
-            this.setTexturef('fryerAimer'); //aiming png
+            dropLoot -= 100;
+            this.setTexture('fryerAimer'); //aiming png
             this.bullet = 'fryerProjectile'; //shot png
             this.base = this.scene.add.sprite(this.x, this.y, 'fryerBase').setOrigin(0.5, 0.5); //base png
             this.reloadSpeed = 25;
@@ -143,7 +149,10 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
 
     setPorter(){
         if(dropLoot >= 100){
+            this.setRotation(0);
+            dropLoot -= 100;
             this.setTexture('porterBase');
+            this.anims.play('wash');
             this.reloadSpeed = Infinity;
             this.turretSetup();
             this.allies.getChildren().forEach(x => x.reloadSpeed = x.reloadSpeed - 75);    

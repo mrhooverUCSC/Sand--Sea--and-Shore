@@ -29,7 +29,9 @@ class Play extends Phaser.Scene {
         this.load.image('butcherBase', 'images/ButcherBase.png');
         this.load.image('butcherAimer', 'images/ButcherAimer.png');
         this.load.image('butcherProjectile', 'images/ButcherProjectile.png');
+
         this.load.image('porterBase', 'images/PorterBase.png');
+        this.load.atlas('porterSheet', 'spritesheets/porterSpriteSheet.png', 'jsonFiles/porterSpriteJson.json');
 
         // tower assets
         this.load.image('tower', 'images/temp_castle1.png');
@@ -204,6 +206,103 @@ class Play extends Phaser.Scene {
 
         // current round text
         this.roundText = this.add.text(game.config.width - 75, 20, `Round ${rounds}`, {fontFamily: 'oswald', fontSize: '20px', color: '#000000', align: 'left'}).setOrigin(0.5, 0.5);
+
+        this.anims.create({
+            key: 'wash',
+            frames: [
+                {frame: 'PorterBase'},
+                {frame: 'PorterBase-2'},
+                {frame: 'PorterBase-3'},
+                {frame: 'PorterBase-4'},
+                {frame: 'PorterBase-5'},
+                {frame: 'PorterBase-4'},
+                {frame: 'PorterBase-3'},
+                {frame: 'PorterBase-2'},
+                {frame: 'PorterBase'}
+            ],
+            defaultTextureKey: 'porterSheet',
+            frameRate: 2.5,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'urchin',
+            frames: [
+                {frame: 'temp_urchin'},
+                {frame: 'urchin_anim1'},
+                {frame: 'urchin_anim2'},
+                {frame: 'urchin_anim3'},
+                {frame: 'urchin_anim4'},
+                {frame: 'urchin_anim5'},
+                {frame: 'urchin_anim6'},
+                {frame: 'urchin_anim7'}
+            ],
+            defaultTextureKey: 'urchin',
+            frameRate: 3,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'crab',
+            frames: [
+                {frame: 'crab_anim1'},
+                {frame: 'crab_anim2'},
+                {frame: 'crab_anim3'},
+                {frame: 'crab_anim4'}
+            ],
+            defaultTextureKey: 'crab',
+            frameRate: 3,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'turtle',
+            frames: [
+                {frame: 'turtle_anim1'},
+                {frame: 'turtle_anim2'},
+            ],
+            defaultTextureKey: 'turtle',
+            frameRate: 3,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'octupus',
+            frames: [
+                {frame: 'octupus_anim1'},
+                {frame: 'octupus_anim2'},
+                {frame: 'octupus_anim3'},
+                {frame: 'octupus_anim4'},
+            ],
+            defaultTextureKey: 'octupus',
+            frameRate: 3,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'pelican',
+            frames: [
+                {frame: 'pelican_anim1'},
+                {frame: 'pelican_anim2'},
+                {frame: 'pelican_anim3'},
+                {frame: 'pelican_anim4'},
+            ],
+            defaultTextureKey: 'pelican',
+            frameRate: 3,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'seagull',
+            frames: [
+                {frame: 'seagull_anim1'},
+                {frame: 'seagull_anim2'},
+                {frame: 'seagull_anim3'},
+                {frame: 'seagull_anim4'},
+                {frame: 'seagull_anim5'},
+                {frame: 'seagull_anim6'},
+                {frame: 'seagull_anim7'},
+                {frame: 'seagull_anim8'},
+            ],
+            defaultTextureKey: 'seagull',
+            frameRate: 3,
+            repeat: -1,
+        });
+
     }
 
     update() {
@@ -223,6 +322,7 @@ class Play extends Phaser.Scene {
         this.physics.world.collide(this.tower, this.enemyRight, this.collisionOccurred, null, this);
 
         this.currency.text = `${dropLoot}`;
+        this.towerHealth.text = `${this.tower.health}`;
     }
 
     // parameters: x Position, y Position, speed, type of enemy, environment of enemy, enemy group
