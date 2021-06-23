@@ -51,9 +51,8 @@ class Tutorial extends Phaser.Scene {
             , textConfig).setOrigin(0.5);
         this.add.text(game.config.width / 2, game.config.height / 2 - 40, 
             `Tower Turrets: There are multiple different types of turrets to choose from with each having different prices and abilities.
-            Depending on which side the turret is facing is the only direction the turrets placed will be facing in the game.
-            To add turrets, click on any black circle to click on a colored circle icon. To replace turrets, reclick the same turret placed 
-            and change to a different one.`
+            Turrets only defend their side of the tower.  To add turrets, click on any black circle, then one of the color squares. 
+            To replace turrets, reclick that turret.  This does not refund your money.`
             , textConfig).setOrigin(0.5);
         textConfig.color = '#754C24';
         this.add.text(game.config.width / 2, game.config.height / 2 + 25,
