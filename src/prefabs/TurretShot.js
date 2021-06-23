@@ -5,6 +5,7 @@ class TurretShot extends Phaser.Physics.Arcade.Sprite {
         this.target = target;
         this.s = scene;
         this.target.expectedDamage += damage;
+        console.log(target, target.expectedDamage, target.health);
         this.damage = damage;
         scene.add.existing(this);
         scene.physics.add.existing(this);

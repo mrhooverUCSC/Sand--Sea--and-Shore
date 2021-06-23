@@ -8,7 +8,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.setButcher = this.setButcher.bind(this); //must BIND these functions in order 
         this.setWaiter = this.setWaiter.bind(this);
         this.setFryer = this.setFryer.bind(this);
-        this.setPorter = this.setPorter.bind(this);
+        this.setWasher = this.setWasher.bind(this);
 
         this.scene = scene;
         this.enemies = enemies;
@@ -79,21 +79,21 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.active = false;
 
         this.removeInteractive();
-        this.butcherOption = this.scene.add.sprite(this.x-20, this.y, 'butcherOption').setOrigin(0.5, 0.5);
+        this.butcherOption = this.scene.add.sprite(this.x-16, this.y-16, 'butcherOption').setOrigin(0.5, 0.5);
         this.butcherOption.setInteractive();
         this.butcherOption.on('pointerdown', this.setButcher); //activate on click
 
-        this.waiterOption = this.scene.add.sprite(this.x+20, this.y, 'waiterOption').setOrigin(0.5, 0.5);
+        this.waiterOption = this.scene.add.sprite(this.x+16, this.y-16, 'waiterOption').setOrigin(0.5, 0.5);
         this.waiterOption.setInteractive();
         this.waiterOption.on('pointerdown', this.setWaiter); //activate on click
 
-        this.fryerOption = this.scene.add.sprite(this.x, this.y-20, 'fryerOption').setOrigin(0.5, 0.5);
+        this.fryerOption = this.scene.add.sprite(this.x-16, this.y+16, 'fryerOption').setOrigin(0.5, 0.5);
         this.fryerOption.setInteractive();
         this.fryerOption.on('pointerdown', this.setFryer);
 
-        this.porterOption = this.scene.add.sprite(this.x, this.y+20, 'porterOption').setOrigin(0.5, 0.5);
-        this.porterOption.setInteractive();
-        this.porterOption.on('pointerdown', this.setPorter);
+        this.washerOption = this.scene.add.sprite(this.x+16, this.y+16, 'washerOption').setOrigin(0.5, 0.5);
+        this.washerOption.setInteractive();
+        this.washerOption.on('pointerdown', this.setWasher);
     }
 
     setButcher(){
@@ -147,11 +147,11 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    setPorter(){
+    setWasher(){
         if(dropLoot >= 100){
             this.setRotation(0);
             dropLoot -= 100;
-            this.setTexture('porterBase');
+            this.setTexture('washerBase');
             this.anims.play('wash');
             this.reloadSpeed = Infinity;
             this.turretSetup();
@@ -168,7 +168,7 @@ class Turret extends Phaser.Physics.Arcade.Sprite {
         this.butcherOption.destroy();
         this.waiterOption.destroy();
         this.fryerOption.destroy();
-        this.porterOption.destroy();
+        this.washerOption.destroy();
         this.setInteractive();
     }
 

@@ -69,7 +69,7 @@ class Tutorial extends Phaser.Scene {
             , textConfig).setOrigin(0.5);
         textConfig.color = '#530066';
         this.add.text(game.config.width / 2, game.config.height / 2 + 110,
-            `Porter (Purple) / Price: 100 / Supports other turrets by increasing how fast other turrets shoot`
+            `Washer (Purple) / Price: 100 / Supports other turrets by increasing how fast other turrets shoot`
             , textConfig).setOrigin(0.5);
         textConfig.color = '#000000';
             

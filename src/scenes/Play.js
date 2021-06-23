@@ -16,7 +16,7 @@ class Play extends Phaser.Scene {
         this.load.image('butcherOption', 'images/ButcherOption.png');
         this.load.image('waiterOption', 'images/WaiterOption.png');
         this.load.image('fryerOption', 'images/FryerOption.png');
-        this.load.image('porterOption', 'images/PorterOption.png');
+        this.load.image('washerOption', 'images/WasherOption.png');
         this.load.image('blank', 'images/Blank.png');
 
         //testing multi-asset turrets
@@ -402,7 +402,7 @@ class Play extends Phaser.Scene {
         shot.destroy();
         enemy.health -= 50; //deal damage
         if(enemy.health <= 0){
-            enemy.enemyDeath();
+            enemy.enemyDeath(true);
         }
     }
 
