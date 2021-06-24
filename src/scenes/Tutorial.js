@@ -42,7 +42,7 @@ class Tutorial extends Phaser.Scene {
         // instructions
         this.add.text(game.config.width / 2, game.config.height / 4 - 50,
             `Gameplay: You are a Chef running a Sand Restaurant when there are creatures by the shoreline trying
-             to destroy the Restaurant! In order to fend of hordes of creatures for 25 rounds, you must manage
+             to destroy your Restaurant! In order to fend of hordes of creatures for 25 rounds, you must manage
              resources earned from fending off the creatures through your own turret to create more tower defenses.`
             , textConfig).setOrigin(0.5);
         this.add.text(game.config.width / 2, game.config.height / 3 - 25, 
@@ -51,8 +51,8 @@ class Tutorial extends Phaser.Scene {
             , textConfig).setOrigin(0.5);
         this.add.text(game.config.width / 2, game.config.height / 2 - 40, 
             `Tower Turrets: There are multiple different types of turrets to choose from with each having different prices and abilities.
-            Turrets only defend their side of the tower.  To add turrets, click on any black circle, then one of the color squares. 
-            To replace turrets, reclick that turret.  This does not refund your money.`
+            Turrets require money to be built, gained from killing enemies.  Turrets only defend their side of the tower.  
+            To add turrets, click on any black circle, then one of the color squares. Turrets can be replaced, but not refunded.`
             , textConfig).setOrigin(0.5);
         textConfig.color = '#754C24';
         this.add.text(game.config.width / 2, game.config.height / 2 + 25,
