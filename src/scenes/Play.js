@@ -9,7 +9,7 @@ class Play extends Phaser.Scene {
         // background
         this.load.image('beachBackground', 'images/beachBackground.png');
         // player
-        this.load.image('player', 'images/PlayerBall.png');
+        this.load.image('player', 'images/PlayerBow.png');
         // turret assets
         this.load.image('projectile', 'images/PlayerProjectile.png');
         //temp assets for turrets
@@ -86,7 +86,7 @@ class Play extends Phaser.Scene {
                          .on('pointerout', () => { this.returnToMenu.setStyle({ fill: '#000000'}); })
                          .on('pointerdown', () => { this.scene.start("menuScene"); this.menuSelectSfx.play(); this.bgm.stop() });
 
-        this.inputRound = this.add.text(game.config.width / 2, 20,'Start Round', textConfig).setOrigin(0.5);
+        this.inputRound = this.add.text(game.config.width * 2 / 3 + 85, 20,'Start Round', textConfig).setOrigin(0.5);
         this.inputRound.setInteractive()
             .on('pointerover', () => { this.inputRound.setStyle({ fill: '#ffff00'}); this.menuSelectingSfx.play(); })
             .on('pointerout', () => { this.inputRound.setStyle({ fill: '#000000'}); })
@@ -95,6 +95,14 @@ class Play extends Phaser.Scene {
                 this.startCurrentRound();
                 this.inputRound.input.enabled = false;
         });
+        this.playerUpgradeText = this.add.text(game.config.width / 2, 20,'Upgrade Player Damage: 50', textConfig).setOrigin(0.5);
+        this.playerUpgradeText.setInteractive()
+            .on('pointerover', () => { this.playerUpgradeText.setStyle({ fill: '#ffff00'}); this.menuSelectingSfx.play(); })
+            .on('pointerout', () => { this.playerUpgradeText.setStyle({ fill: '#000000'}); })
+            .on('pointerdown', () => {
+                this.playerUpgrade();
+        });
+
 
         // droploot/currency text
         this.add.image(game.config.width - borderUISize * 3.6, 20, 'currency').setOrigin(0.5, 0.5);
@@ -112,8 +120,8 @@ class Play extends Phaser.Scene {
 
         // tower's health
         textConfig.color = 'green';
-        let healthLabel = this.add.text(game.config.width / 2 - 200, 20, 'HP :', textConfig).setOrigin(0.5, 0.5);
-        this.towerHealth = this.add.text(game.config.width / 2 - 150, 20, `${this.tower.health}`, textConfig).setOrigin(0.5, 0.5);
+        let healthLabel = this.add.text(game.config.width / 2 - 250, 20, 'HP:', textConfig).setOrigin(0.5, 0.5);
+        this.towerHealth = this.add.text(game.config.width / 2 - 210, 20, `${this.tower.health}`, textConfig).setOrigin(0.5, 0.5);
 
         //Enemy groups
         this.enemyLeft = this.add.group({
@@ -396,6 +404,10 @@ class Play extends Phaser.Scene {
                 this.waves.spawn(this.zones[6], this.zones[7], Phaser.Math.Between(5, 10) + rounds * 1.9, 20, this.environmentTypes[1], this.enemyTypes[Phaser.Math.Between(4, 5)]);
             }
         });
+    }
+
+    playerUpgrade(){
+        
     }
 
     enemyHitByPlayer(enemy, shot){
