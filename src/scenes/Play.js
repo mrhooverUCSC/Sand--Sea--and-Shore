@@ -34,7 +34,7 @@ class Play extends Phaser.Scene {
         this.load.atlas('porterSheet', 'spritesheets/porterSpriteSheet.png', 'jsonFiles/porterSpriteJson.json');
 
         // tower assets
-        this.load.image('tower', 'images/temp_castle1.png');
+        this.load.image('tower', 'images/tower.png');
     
         // enemy assets
         // We got the crab idea from: https://stock.adobe.com/images/crab-walking-animation-sequence-cartoon-vector/277552587?as_campaign=ftmigration2&as_channel=dpcft&as_campclass=brand&as_source=ft_web&as_camptype=acquisition&as_audience=users&as_content=closure_asset-detail-page
@@ -99,13 +99,11 @@ class Play extends Phaser.Scene {
         this.playerUpgradeText.setInteractive()
             .on('pointerover', () => { this.playerUpgradeText.setStyle({ fill: '#ffff00'}); this.menuSelectingSfx.play(); })
             .on('pointerout', () => { this.playerUpgradeText.setStyle({ fill: '#000000'}); })
-            .on('pointerdown', () => {
-                this.playerUpgrade();
-        });
+            .on('pointerdown', () => {this.playerUpgrade();});
 
 
         // droploot/currency text
-        this.add.image(game.config.width - borderUISize * 3.6, 20, 'currency').setOrigin(0.5, 0.5);
+        this.add.image(game.config.width - borderUISize * 3.6 - 10, 20, 'currency').setOrigin(0.5, 0.5);
         this.currency = this.add.text(game.config.width - borderUISize * 3, 20, `${dropLoot}`, textConfig).setOrigin(0.5, 0.5);
 
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -114,9 +112,9 @@ class Play extends Phaser.Scene {
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         // Tower
-        this.tower = new Tower(this, game.config.width / 2, game.config.height - 260, 'tower').setOrigin(0.5, 0.5);
-        this.tower.setScale(1.55);
-        this.tower.displayHeight = game.config.height * .75;
+        this.tower = new Tower(this, game.config.width / 2, game.config.height - 270, 'tower').setOrigin(0.5, 0.5);
+        this.tower.setScale(.5);
+        this.tower.displayHeight = game.config.height * .82;
 
         // tower's health
         textConfig.color = 'green';
@@ -182,22 +180,23 @@ class Play extends Phaser.Scene {
             runChildUpdate: true
         });
 
-        this.player = new Player(this, game.config.width / 2, game.config.height / 4, 'player', this.shots).setOrigin(0.5, 0.5);
+        this.player = new Player(this, game.config.width / 2, game.config.height / 7, 'player', this.shots).setOrigin(0.5, 0.5);
+        this.playerDamage = 50; //starting damage of player's shots
 
         this.leftTurrets = this.add.group({
             runChildUpdate: true
         })
-        this.turret1 = new Turret(this, 2 * game.config.width/5 + 45, 2*game.config.height/5, this.enemyLeft, this.leftTurrets).setOrigin(0.5, 0.5);
-        this.turret2 = new Turret(this, 2 * game.config.width/5 + 45, 3*game.config.height/5, this.enemyLeft, this.leftTurrets).setOrigin(0.5, 0.5);
-        this.turret3 = new Turret(this, 2 * game.config.width/5 + 45, 4*game.config.height/5, this.enemyLeft, this.leftTurrets).setOrigin(0.5, 0.5);
+        this.turret1 = new Turret(this, 2 * game.config.width/5 + 45 + 19, 2*game.config.height/5 - 72, this.enemyLeft, this.leftTurrets).setOrigin(0.5, 0.5);
+        this.turret2 = new Turret(this, 2 * game.config.width/5 + 45, 3*game.config.height/5 - 75, this.enemyLeft, this.leftTurrets).setOrigin(0.5, 0.5);
+        this.turret3 = new Turret(this, 2 * game.config.width/5 + 45 - 20, 4*game.config.height/5 - 72, this.enemyLeft, this.leftTurrets).setOrigin(0.5, 0.5);
         this.leftTurrets.add(this.turret1).add(this.turret2).add(this.turret3);
 
         this.rightTurrets = this.add.group({
             runChildUpdate: true
         })
-        this.turret4 = new Turret(this, 3 * game.config.width/5 - 45, 2*game.config.height/5, this.enemyRight, this.rightTurrets).setOrigin(0.5, 0.5);
-        this.turret5 = new Turret(this, 3 * game.config.width/5 - 45, 3*game.config.height/5, this.enemyRight, this.rightTurrets).setOrigin(0.5, 0.5);
-        this.turret6 = new Turret(this, 3 * game.config.width/5 - 45, 4*game.config.height/5, this.enemyRight, this.rightTurrets).setOrigin(0.5, 0.5);
+        this.turret4 = new Turret(this, 3 * game.config.width/5 - 45 - 19, 2*game.config.height/5 - 72, this.enemyRight, this.rightTurrets).setOrigin(0.5, 0.5);
+        this.turret5 = new Turret(this, 3 * game.config.width/5 - 45, 3*game.config.height/5 - 75, this.enemyRight, this.rightTurrets).setOrigin(0.5, 0.5);
+        this.turret6 = new Turret(this, 3 * game.config.width/5 - 45 + 20, 4*game.config.height/5 - 72, this.enemyRight, this.rightTurrets).setOrigin(0.5, 0.5);
         this.rightTurrets.add(this.turret4).add(this.turret5).add(this.turret6);
 
         // stores each type of zone/environment
@@ -407,12 +406,63 @@ class Play extends Phaser.Scene {
     }
 
     playerUpgrade(){
-        
+        if(playerLevel == 0 && dropLoot >= 100){
+            this.menuSelectSfx.play();
+            dropLoot -= 50;
+            playerLevel++;
+            this.playerDamage += 10;
+            this.playerUpgradeText.text = "Upgrade Player Turn Speed: 100";
+            console.log("player damage increase");
+        }
+        else if(playerLevel == 1 && dropLoot >= 100){
+            this.menuSelectSfx.play();
+            dropLoot -= 50;
+            playerLevel++;
+            this.player.increaseTurnSpeed();
+            this.playerUpgradeText.text = "Upgrade Player Shot Speed: 100";
+            console.log("player turnspeed increase");
+        }
+        else if(playerLevel == 2 && dropLoot >= 100){
+            this.menuSelectSfx.play();
+            dropLoot -= 50;
+            playerLevel++;
+            this.player.increaseShotSpeed();
+            this.playerUpgradeText.text = "Upgrade Player Damage: 250";
+            console.log("player shot speed increase");
+        }
+        else if(playerLevel == 3 && dropLoot >= 250){
+            this.menuSelectSfx.play();
+            dropLoot -= 50;
+            playerLevel++;
+            this.playerDamage += 10;
+            this.playerUpgradeText.text = "Upgrade Player Turn Speed: 250";
+            console.log("player damage increase");
+        }
+        else if(playerLevel == 4 && dropLoot >= 250){
+            this.menuSelectSfx.play();
+            dropLoot -= 50;
+            playerLevel++;
+            this.player.increaseTurnSpeed();
+            this.playerUpgradeText.text = "Upgrade Player Shot Speed: 250";
+            console.log("player turnspeed increase");
+        }
+        else if(playerLevel == 5 && dropLoot >= 250){
+            this.menuSelectSfx.play();
+            dropLoot -= 50;
+            playerLevel++;
+            this.player.increaseShotSpeed();
+            this.playerUpgradeText.input.enabled = false;
+            this.playerUpgradeText.text = '';
+            console.log("player shot speed increase");
+        }
+        else{
+            this.error.play();
+        }
     }
 
     enemyHitByPlayer(enemy, shot){
         shot.destroy();
-        enemy.health -= 50; //deal damage
+        enemy.health -= this.playerDamage; //deal damage
         if(enemy.health <= 0){
             enemy.enemyDeath(true);
         }

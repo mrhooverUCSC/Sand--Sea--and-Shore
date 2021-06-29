@@ -4,9 +4,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.scene = scene; //need the scene to make PlayerShot in the future
-        this.turnSpeed = 125; //rotation speed of the player
+        this.turnSpeed = 75; //rotation speed of the player
         this.shots = shots; //all ally shots
         this.ready = true; //whether it can shoot
+        this.shotSpeed = 300;
     }
 
     update() {
@@ -22,7 +23,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setAngularVelocity(0);
         }
         if((keyRIGHT.isDown || keySHIFT.isDown) && this.ready == true){
-            let newShot = new PlayerShot(this.scene, this.x + this.width/2 * Math.cos(this.rotation), this.y + this.height/2 * Math.sin(this.rotation), 'projectile', this.rotation).setOrigin(0.5, 0.5);
+            let newShot = new PlayerShot(this.scene, this.x + this.width/2 * Math.cos(this.rotation), this.y + this.height/2 * Math.sin(this.rotation), 'projectile', this.rotation, this.shotSpeed).setOrigin(0.5, 0.5);
             this.shots.add(newShot);
             this.scene.throwingSfx.play();
             this.ready = false;
@@ -37,5 +38,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     shotAvailable(){
         this.ready = true;
+    }
+
+    increaseTurnSpeed(){
+        this.turnSpeed += 25;
+    }
+
+    increaseShotSpeed(){
+        this.shotSpeed += 50
     }
 }
